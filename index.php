@@ -1,104 +1,134 @@
-<section class="slice sct-color-1">
-    <?php if (!empty($success_alert)): ?>
-            <div class="col-6 ml-auto mr-auto" id="success_alert">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <?=$success_alert?>
-                </div>
-            </div>
-        <?php endif ?>
-    <div class="container">
-        <div class="section-title section-title--style-1 text-center mb-4">
-            <h3 class="section-title-inner heading-1 strong-300 text-normal">
-                <?php echo translate('contact_us')?>
-            </h3>
-            <span class="section-title-delimiter clearfix d-none"></span>
-        </div>
-
-        <span class="clearfix"></span>
-        <?php
-            $contact_us_text = $this->db->get_where('frontend_settings', array('type' => 'contact_us_text'))->row()->value;
-        ?>
-      <!--  <div class="fluid-paragraph fluid-paragraph-sm c-gray-light strong-300 text-center">
-            <?php echo $contact_us_text?>
-        </div>-->
-
-        <span class="space-xs-xl"></span>
-
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <!-- Contact form -->
-                <form class="form-default" role="form" method="POST" action="<?=base_url()?>home/contact_us/send">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group has-feedback">
-                                <label for="" class="text-uppercase c-gray-light"><?php echo translate('your_name')?></label>
-                                <input type="text" name="name" class="form-control form-control-md" required="" value="<?php if(!empty($form_contents)){echo $form_contents['name'];}?>">
-                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group has-feedback">
-                                <label for="" class="text-uppercase c-gray-light"><?php echo translate('email_address')?></label>
-                                <input type="email" name="email" class="form-control form-control-md" required="" value="<?php if(!empty($form_contents)){echo $form_contents['email'];}?>">
-                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group has-feedback">
-                                <label for="" class="text-uppercase c-gray-light"><?php echo translate('subject')?></label>
-                                <input type="text" name="subject" class="form-control form-control-md" required="" value="<?php if(!empty($form_contents)){echo $form_contents['subject'];}?>">
-                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group has-feedback">
-                                <label for="" class="text-uppercase c-gray-light"><?php echo translate('message')?> <small class="text-danger sml_txt" style="text-transform: none;"><?='('.translate('max_300_characters').')'?></small></label>
-                                <textarea name="message" class="form-control no-resize" rows="5" required="" maxlength="300"><?php if(!empty($form_contents)){echo $form_contents['message'];}?></textarea>
-                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-                        if($this->Crud_model->get_settings_value('third_party_settings','captcha_status','value') == 'ok') {
-                    ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?=$recaptcha_html?>
-                            </div>
-                        </div>
-                    <?php
-                        }
-                    ?>
-                    <div class="mt-2 col-12">
-                        <?php if (!empty($captcha_incorrect) && $captcha_incorrect == TRUE): ?>
-                            <p class="text-danger"><?=translate('captcha_incorrect')?></p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="">
-                        <button type="submit" class="btn btn-styled btn-base-1 mt-4"><?php echo translate('send_message')?></button>
-                    </div>
-                </form>
-            </div>
+<section class="sct-color-1">
+    <div class="container-fluid no-padding">
+        <div class="row row-no-padding">
+            <?php $slider_status = $this->db->get_where('frontend_settings', array('type' => 'slider_status'))->row()->value;
+            $home_members_status = $this->db->get_where('frontend_settings', array('type' => 'home_members_status'))->row()->value;
+            $home_parallax_status = $this->db->get_where('frontend_settings', array('type' => 'home_parallax_status'))->row()->value;
+            $home_stories_status = $this->db->get_where('frontend_settings', array('type' => 'home_stories_status'))->row()->value;
+            $home_plans_status = $this->db->get_where('frontend_settings', array('type' => 'home_plans_status'))->row()->value;
+            $home_contact_status = $this->db->get_where('frontend_settings', array('type' => 'home_contact_status'))->row()->value;
+            $slider_position = $this->db->get_where('frontend_settings', array('type' => 'slider_position'))->row()->value;
+            if($slider_status=='yes'){
+                $home_search_style = $this->db->get_where('frontend_settings', array('type' => 'home_search_style'))->row()->value;
+				if (!empty($this->session->userdata['member_id'])) { 
+                if ($home_search_style == '2') {
+                    if($slider_position=='left'){
+                        include_once 'slider_2.php';
+						  
+							include_once 'search.php';
+						 
+                    } elseif($slider_position=='right'){
+                        // if (!empty($this->session->userdata['member_id'])) {
+							include_once 'search.php';
+						 //} 
+                        include_once 'slider_2.php';
+                    }
+                } 
+			}else  {
+					//if ($home_search_style == '1') {
+                    include_once 'slider.php';
+                }
+            }
+            ?>
         </div>
     </div>
 </section>
+<?php
+    if($home_members_status=='yes'){
+       // include_once'premium_members.php';
+    }
+    if($home_parallax_status=='yes'){
+        include_once'parallax.php';
+    }
+    if($home_stories_status=='yes'){
+        //include_once'happy_stories.php';
+    }
+    if($home_plans_status=='yes'){
+        //include_once'packages.php';
+    }
+    if($home_contact_status=='yes'){
+        include_once'contact.php';
+    }
+?>
+<script src="<?=base_url()?>template/front/js/jquery.inputmask.bundle.min.js"></script>
 <script>
     $(document).ready(function(){
-        setTimeout(function() {
-            $('.alert-success').fadeOut('fast');
-        }, 5000); // <-- time in milliseconds
+        $(".height_mask").inputmask({
+            mask: "9.99",
+            greedy: false,
+            definitions: {
+                '*': {
+                    validator: "[0-9]"
+                }
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#aged_from").change(function(){
+            var from = parseInt($("#aged_from").val());
+            var to = parseInt($("#aged_to").val());
+            if (to < from) {
+                var to = $("#aged_to").val(from);
+            }
+        });
+        $("#aged_to").change(function(){
+            var from = parseInt($("#aged_from").val());
+            var to = parseInt($("#aged_to").val());
+            if (to < from) {
+                var to = $("#aged_to").val(from);
+            }
+        });
+    });
+
+     $(".s_religion").change(function(){
+        var religion_id = $(".s_religion").val();
+        if (religion_id == "") {
+            $(".s_caste").html("<option value=''><?php echo translate('choose_a_religion_first')?></option>");
+            $(".s_sub_caste").html("<option value=''><?php echo translate('choose_a_caste_first')?></option>");
+        } else {
+            $.ajax({
+                url: "<?=base_url()?>home/get_dropdown_by_id_caste/caste/religion_id/"+religion_id, // form action url
+                type: 'POST', // form submit method get/post
+                dataType: 'html', // request type html/json/xml
+                cache       : false,
+                contentType : false,
+                processData : false,
+                success: function(data) {
+                    $(".s_caste").html(data);
+                    $(".s_sub_caste").html("<option value=''><?php echo translate('choose_a_caste_first')?></option>");
+                },
+                error: function(e) {
+                    console.log(e)
+                }
+            });
+        }
+    });
+
+    $(".s_caste").change(function(){
+        var caste_id = $(".s_caste").val();
+        if (caste_id == "") {
+            $(".s_sub_caste").html("<option value=''><?php echo translate('choose_a_caste_first')?></option>");
+        } else {
+            $.ajax({
+                url: "<?=base_url()?>home/get_dropdown_by_id_sub_caste/sub_caste/caste_id/"+caste_id, // form action url
+                type: 'POST', // form submit method get/post
+                dataType: 'html', // request type html/json/xml
+                cache       : false,
+                contentType : false,
+                processData : false,
+                success: function (data) {
+                    if(data == false ){
+                        $(".s_sub_caste").html("<option value=''><?php echo translate('none')?></option>");
+                    } else {
+                        $(".s_sub_caste").html(data);
+                    };
+               },
+                error: function(e) {
+                    console.log(e)
+                }
+            });
+        }
     });
 </script>
