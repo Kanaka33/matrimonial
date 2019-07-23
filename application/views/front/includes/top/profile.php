@@ -77,3 +77,4 @@
 <!-- SCRIPTS -->
 <!-- Core -->
 <script src="<?=base_url()?>template/front/vendor/jquery/jquery.min.js"></script>
+<script src="<?=base_url()?>template/front/vendor/jquery/jquery.validate.min.js"></script>
