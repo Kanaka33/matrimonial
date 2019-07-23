@@ -10,7 +10,7 @@
                                             if ($footer_logo_position == 'left') {
                                             ?>
                                                 <div class="col-md-3 col-lg-3">
-                                                    <div class="col">
+                                                  <!--  <div class="col">
                                                         <a class="navbar-brand" href="#">
                                                             <?php
                                                                 if (file_exists('uploads/footer_logo/'.$footer_logo[0]['image'])) {
@@ -26,7 +26,7 @@
                                                             ?>
                                                         </a>
                                                         <div class="text-center"><small><?=$footer_text?></small></div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             <?php
                                             }
@@ -41,13 +41,15 @@
                                                     <?php echo translate('home')?></a>
                                                     </li>
                                                     <li>
-                                                    <a href="<?=base_url()?>home/plans" title="Premium Plans">
-                                                    <?php echo translate('premium_plans')?></a>
+													<a title="Members" onclick="return goto_members()">
+                                                    <?php echo translate('members')?></a>
+                                                   <!-- <a href="<?=base_url()?>home/members" title="Members">
+                                                    <?php echo translate('active_members')?></a>-->
                                                     </li>
-                                                    <li>
+                                                   <!-- <li>
                                                     <a href="<?=base_url()?>home/stories" title="Happy Stories">
                                                     <?php echo translate('happy_stories')?></a>
-                                                    </li>
+                                                    </li> -->
                                                     <li>
                                                     <a href="<?=base_url()?>home/contact_us" title="Contact Us">
                                                     <?php echo translate('contact_us')?></a>
@@ -56,7 +58,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-lg-3 d-none d-lg-block d-md-block">
-                                            <div class="col">
+                                           <!-- <div class="col">
                                                 <h4 class="heading heading-xs strong-600 text-uppercase mb-1">
                                                 <?php echo translate('quick_search')?></h4>
                                                 <ul class="footer-links">
@@ -69,11 +71,11 @@
                                                     <?php echo translate('premium_members')?></a>
                                                     </li>
                                                     <li>
-                                                    <a href="<?=base_url()?>home/listing/free_members" title="Free Members">
-                                                    <?php echo translate('free_members')?></a>
+                                                    <a href="<?=base_url()?>home/listing/members" title="Members">
+                                                    <?php echo translate('active_members')?></a>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div>-->
                                         </div>
                                         <div class="col-md-3 col-lg-3">
                                             <div class="col">
@@ -82,7 +84,7 @@
                                                 <ul class="footer-links">
                                                     <li>
                                                     <a href="<?=base_url()?>home/faq" title="FAQ">
-                                                    FAQ </a>
+                                                    <?php echo translate('FAQ')?> </a>
                                                     </li>
                                                     <li>
                                                     <a href="<?=base_url()?>home/terms_and_conditions" title="Terms & Conditions">
@@ -129,7 +131,7 @@
                                         <div class="col col-md-7">
                                             <div class="copyright text-center text-sm-left mt-2">
                                                  <?=translate('copyright')?> &copy; <?=date("Y")?> <a href="<?=base_url()?>" class="c-base-1" target="_blank" title="Webpixels - Official Website">
-                                                <strong class="strong-400"><?=$this->system_name?></strong>
+                                                <strong class="strong-400"><?//=$this->system_name?></strong>
                                                 </a> - <?php echo translate('all_rights_reserved')?>
                                             </div>
                                         </div>
@@ -147,3 +149,17 @@
     <!-- END: st-container -->
 </div>
 <!-- END: body-wrap --> 
+<script type="text/javascript">
+function goto_members() {
+								var isloggedin = "<?=$this->session->userdata('member_id')?>";
+								if (isloggedin == "") {
+									$("#active_modal").modal("toggle");
+									$("#modal_header").html("<?=translate('please_login_or_register')?>");
+									$("#modal_body").html("<p class='text-center'><?=translate('please_login_or_register_message')?></p>");
+									$("#modal_buttons").html("<a href='<?=base_url()?>home/registration' class='btn btn-sm btn-base-1 btn-shadow' style='width:25%'><?=translate('register_now')?></a>&nbsp;<a href='<?=base_url()?>home/login' class='btn btn-sm btn-base-1 btn-shadow' style='width:25%'><?=translate('login')?></a>");
+								}
+								else {
+									window.location.href = "<?=base_url()?>home/listing/members";
+								}
+							}
+</script>
