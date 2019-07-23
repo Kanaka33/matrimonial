@@ -15,23 +15,97 @@
                 <button type="button" id="hide_permanent_address" <?php if ($privacy_status_data[0]['permanent_address'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('permanent_address')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('permanent_address')">
                 <i class="ion-edit"></i>
                 </button>
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">
             <div class="table-full-width">
                 <table class="table table-profile table-responsive table-striped table-bordered table-slick">
                     <tbody>
-                        <tr>
+					 <tr>
+						 <td class="td-label">
+                                <span><?php echo translate('House/Door NO')?></span>
+                            </td>
+							<?php 
+							if (!empty($permanent_address_data[0]['permanent_doornumber']) && 
+							$permanent_address_data[0]['permanent_doornumber'] != '') {
+							?>
+                            <td>
+                                <?=$permanent_address_data[0]['permanent_doornumber']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
                             <td class="td-label">
-                                <span><?php echo translate('country')?></span>
+                                <span><?php echo translate('street_name')?></span>
+                            </td>
+							<?php 
+							if (!empty($permanent_address_data[0]['permanent_street_name']) && 
+							$permanent_address_data[0]['permanent_street_name'] != '') {
+							?>
+                            <td>
+                                <?=$permanent_address_data[0]['permanent_street_name']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                        </tr>
+						<tr>
+						 <td class="td-label">
+                                <span><?php echo translate('landmark')?></span>
+                            </td>
+							<?php 
+							if (!empty($permanent_address_data[0]['permanent_landmark']) && 
+							$permanent_address_data[0]['permanent_landmark'] != '') {
+							?>
+                            <td>
+                                <?=$permanent_address_data[0]['permanent_landmark']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                            <td class="td-label">
+                                <span><?php echo translate('village/Town')?></span>
+                            </td>
+							<?php 
+							if (!empty($permanent_address_data[0]['permanent_village']) && 
+							$permanent_address_data[0]['permanent_village'] != '') {
+							?>
+                            <td>
+                                <?=$permanent_address_data[0]['permanent_village']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                        </tr>
+                        <tr>
+						 <td class="td-label">
+								<span><?php echo translate('city')?></span>
                             </td>
                             <td>
-                                <?=$this->Crud_model->get_type_name_by_id('country', $permanent_address_data[0]['permanent_country']);?>
+                                <?=$this->Crud_model->get_type_name_by_id('city', $permanent_address_data[0]['permanent_city']);?>
                             </td>
-                            <td class="td-label">
+							<td class="td-label">
                                 <span><?php echo translate('state')?></span>
                             </td>
                             <td>
@@ -40,10 +114,10 @@
                         </tr>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('city')?></span>
+                                <span><?php echo translate('country')?></span>
                             </td>
                             <td>
-                                <?=$this->Crud_model->get_type_name_by_id('city', $permanent_address_data[0]['permanent_city']);?>
+                                <?=$this->Crud_model->get_type_name_by_id('country', $permanent_address_data[0]['permanent_country']);?>
                             </td>
                             <td class="td-label">
                                 <span><?php echo translate('postal-Code')?></span>
@@ -71,10 +145,46 @@
         
         <div class='clearfix'></div>
         <form id="form_permanent_address" class="form-default" role="form">
+		  <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="permanent_doornumber" class="text-uppercase c-gray-light"><?php echo translate('House/Door Number')?></label>
+                        <input type="text" class="form-control no-resize" name="permanent_doornumber" value="<?=!empty($permanent_address_data[0]['permanent_doornumber'])?$permanent_address_data[0]['permanent_doornumber']:""?>">
+						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="permanent_street_name" class="text-uppercase c-gray-light"><?php echo translate('street_name')?></label>
+                        <input type="text" class="form-control no-resize" name="permanent_street_name" value="<?=!empty($permanent_address_data[0]['permanent_street_name'])?$permanent_address_data[0]['permanent_street_name']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="permanent_landmark" class="text-uppercase c-gray-light"><?php echo translate('landmark')?></label>
+                        <input type="text" class="form-control no-resize" name="permanent_landmark" value="<?=!empty($permanent_address_data[0]['permanent_landmark'])?$permanent_address_data[0]['permanent_landmark']:""?>">
+						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="permanent_village" class="text-uppercase c-gray-light"><?php echo translate('village/Town')?></label>
+                        <input type="text" class="form-control no-resize" name="permanent_village" value="<?=!empty($permanent_address_data[0]['permanent_village'])?$permanent_address_data[0]['permanent_village']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="permanent_country" class="text-uppercase c-gray-light"><?php echo translate('country')?></label>
+                        <label for="permanent_country" class="text-uppercase c-gray-light"><?php echo translate('country')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php 
                             echo $this->Crud_model->select_html('country', 'permanent_country', 'name', 'edit', 'form-control form-control-sm selectpicker permanent_country_edit', $permanent_address_data[0]['permanent_country'], '', '', '');
                         ?>
@@ -90,7 +200,7 @@
                                 echo $this->Crud_model->select_html('state', 'permanent_state', 'name', 'edit', 'form-control form-control-sm selectpicker permanent_state_edit', $permanent_address_data[0]['permanent_state'], 'country_id', $permanent_address_data[0]['permanent_country'], '');   
                             } else {
                             ?>
-                                <select class="form-control form-control-sm selectpicker permanent_state_edit" name="permanent_state">
+                                <select class="form-control form-control-sm selectpicker permanent_state_edit" name="permanent_state"><span style="color:red;font-size:18px;">*</span>
                                     <option value=""><?php echo translate('choose_a_country_first')?></option>
                                 </select>
                             <?php

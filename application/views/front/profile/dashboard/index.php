@@ -100,8 +100,12 @@
                                         <b><?php echo translate('profile_information')?></b>
                                     </h3>
                                     <div class="pull-right">
+										<?php
+											if($get_member[0]->is_submit==0){
+										?>
                                         <a href="<?=base_url()?>home/profile/edit_full_profile" class="btn btn-base-1 btn-sm btn-shadow"><i class="ion-edit"></i> <?php echo translate('edit_all')?></a>
-                                    </div>
+										<?php } ?>
+									</div>
                                 </div>
                                 <?php
                                     $privacy_status = $this->Crud_model->get_type_name_by_id('member', $this->session->userdata['member_id'], 'privacy_status');
@@ -152,7 +156,7 @@
                                         }
                                     ?>
                                     <?php
-                                        if ($this->db->get_where('frontend_settings', array('type' => 'hobbies_and_interests'))->row()->value == "yes") {
+                                        if ($this->db->get_where('frontend_settings', array('type' => 'hobbies_and_interest'))->row()->value == "yes") {
                                     ?>
                                         <div id="section_hobbies_and_interest">
                                             <?php include_once 'hobbies_and_interest.php'; ?>
@@ -215,7 +219,7 @@
                                         }
                                     ?>
                                     <?php
-                                        if ($this->db->get_where('frontend_settings', array('type' => 'family_information'))->row()->value == "yes") {
+                                        if ($this->db->get_where('frontend_settings', array('type' => 'family_info'))->row()->value == "yes") {
                                     ?>
                                         <div id="section_family_info">
                                             <?php include_once 'family_info.php'; ?>
@@ -228,6 +232,24 @@
                                     ?>
                                         <div id="section_additional_personal_details">
                                             <?php include_once 'additional_personal_details.php'; ?>
+                                        </div>
+                                    <?php
+                                        }
+                                    ?>
+									<?php
+                                        if ($this->db->get_where('frontend_settings', array('type' => 'father_family_details'))->row()->value == "yes") {
+                                    ?>
+                                        <div id="section_father_family_details">
+                                            <?php include_once 'father_family_details.php'; ?>
+                                        </div>
+                                    <?php
+                                        }
+                                    ?>
+									<?php
+                                        if ($this->db->get_where('frontend_settings', array('type' => 'mother_family_details'))->row()->value == "yes") {
+                                    ?>
+                                        <div id="section_mother_family_details">
+                                            <?php include_once 'mother_family_details.php'; ?>
                                         </div>
                                     <?php
                                         }

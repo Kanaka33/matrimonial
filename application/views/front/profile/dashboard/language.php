@@ -15,9 +15,11 @@
                 <button type="button" id="hide_language" <?php if ($privacy_status_data[0]['language'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('language')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('language')">
                 <i class="ion-edit"></i>
                 </button> 
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">

@@ -15,9 +15,11 @@
                 <button type="button" id="hide_residency_information" <?php if ($privacy_status_data[0]['residency_information'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('residency_information')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('residency_information')">
                 <i class="ion-edit"></i>
-                </button>  
+                </button> 
+				<?php } ?>				
             </div>
         </div>
         <div class="table-full-width">
@@ -54,7 +56,7 @@
                         </tr>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('immigration_status')?></span>
+                                <span><?php echo translate('visa_status')?></span>
                             </td>
                             <td>
                                 <?=$residency_information_data[0]['immigration_status']?>
@@ -84,7 +86,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="birth_country" class="text-uppercase c-gray-light"><?php echo translate('birth_country')?></label>
+                        <label for="birth_country" class="text-uppercase c-gray-light"><?php echo translate('birth_country')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php 
                             echo $this->Crud_model->select_html('country', 'birth_country', 'name', 'edit', 'form-control form-control-sm selectpicker', $residency_information_data[0]['birth_country'], '', '', '');
                         ?>
@@ -106,7 +108,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="citizenship_country" class="text-uppercase c-gray-light"><?php echo translate('citizenship_country')?></label>
+                        <label for="citizenship_country" class="text-uppercase c-gray-light"><?php echo translate('citizenship_country')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php 
                             echo $this->Crud_model->select_html('country', 'citizenship_country', 'name', 'edit', 'form-control form-control-sm selectpicker', $residency_information_data[0]['citizenship_country'], '', '', '');
                         ?>
@@ -128,7 +130,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="immigration_status" class="text-uppercase c-gray-light"><?php echo translate('immigration_status')?></label>
+                        <label for="immigration_status" class="text-uppercase c-gray-light"><?php echo translate('visa_status')?></label>
                         <input type="text" class="form-control no-resize" name="immigration_status" value="<?=$residency_information_data[0]['immigration_status']?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>

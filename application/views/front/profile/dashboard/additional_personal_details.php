@@ -15,9 +15,11 @@
                 <button type="button" id="hide_additional_personal_details" <?php if ($privacy_status_data[0]['additional_personal_details'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('additional_personal_details')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('additional_personal_details')">
                 <i class="ion-edit"></i>
-                </button>  
+                </button>
+				<?php } ?>				
             </div>
         </div>
         <div class="table-full-width">
@@ -51,6 +53,25 @@
                             <td>
                                 <?=$additional_personal_details_data[0]['special_circumstances']?>
                             </td>
+                        </tr>
+						<tr>
+                           <td class="td-label">
+                                <span><?php echo translate("property")?></span>
+                            </td>
+							<?php 
+							if (isset($additional_personal_details_data[0]['property']) && 
+							$additional_personal_details_data[0]['property'] != '') {
+							?>
+                            <td>
+                                <?=$additional_personal_details_data[0]['property']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
                         </tr>
                     </tbody>
                 </table>
@@ -105,6 +126,19 @@
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="property" class="text-uppercase c-gray-light"><?php echo translate('property')?></label><span style="color:red;font-size:18px;">*</span>
+                        <input type="text" class="form-control no-resize" name="property" value="<?=isset($additional_personal_details_data[0]['property'])?$additional_personal_details_data[0]['property']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    
                 </div>
             </div>
         </form>

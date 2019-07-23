@@ -9,9 +9,11 @@
                 <?php echo translate('basic_information')?>
             </h3>
             <div class="pull-right">
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('basic_info')">
                 <i class="ion-edit"></i>
                 </button>
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">
@@ -52,7 +54,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $calculated_age = (date('Y') - date('Y', $get_member[0]->date_of_birth));
+                                    $calculated_age = (date('Y') - date('Y', strtotime($get_member[0]->date_of_birth)));
                                     echo $calculated_age;
                                 ?>
                             </td>
@@ -64,14 +66,20 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="td-label">
+						 <td class="td-label">
+                               <span><?php echo translate('date_of_birth')?></span>
+                            </td>
+                            <td>
+                                <?=date('d/m/Y', strtotime($get_member[0]->date_of_birth))?>
+                            </td>
+                          <!--  <td class="td-label">
                                 <span><?php echo translate('number_of_children')?></span>
                             </td>
                             <td>
                                 <?=$basic_info_data[0]['number_of_children']?>
-                            </td>
+                            </td> -->
                             <td class="td-label">
-                                <span><?php echo translate('area')?></span>
+                                <span><?php echo translate('area(residential/working place)')?></span>
                             </td>
                             <td>
                                 <?=$basic_info_data[0]['area']?>
@@ -90,12 +98,7 @@
                             <td><?=$get_member[0]->mobile?></td>
                         </tr>
                         <tr>
-                            <td class="td-label">
-                                <span><?php echo translate('date_of_birth')?></span>
-                            </td>
-                            <td>
-                                <?=date('d/m/Y', $get_member[0]->date_of_birth)?>
-                            </td>
+                           
 
                             <td class="td-label">
 
@@ -126,7 +129,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="first_name" class="text-uppercase c-gray-light"><?php echo translate('first_name')?></label>
+                        <label for="first_name" class="text-uppercase c-gray-light"><?php echo translate('first_name')?></label><span style="color:red;font-size:18px;">*</span>
                         <input type="text" class="form-control no-resize" name="first_name" value="<?=$get_member[0]->first_name?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
@@ -134,7 +137,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="last_name" class="text-uppercase c-gray-light"><?php echo translate('last_name')?></label>
+                        <label for="last_name" class="text-uppercase c-gray-light"><?php echo translate('last_name')?></label><span style="color:red;font-size:18px;">*</span>
                         <input type="text" class="form-control no-resize" name="last_name" value="<?=$get_member[0]->last_name?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
@@ -144,7 +147,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="first_name" class="text-uppercase c-gray-light"><?php echo translate('gender')?></label>
+                        <label for="gender" class="text-uppercase c-gray-light"><?php echo translate('gender')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php
                             echo $this->Crud_model->select_html('gender', 'gender', 'name', 'edit', 'form-control form-control-sm selectpicker', $get_member[0]->gender, '', '', '');
                         ?>
@@ -154,7 +157,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="email" class="text-uppercase c-gray-light"><?php echo translate('email')?></label>
+                        <label for="email" class="text-uppercase c-gray-light"><?php echo translate('email')?></label><span style="color:red;font-size:18px;">*</span>
                         <input type="hidden" name="old_email" value="<?=$get_member[0]->email?>">
                         <input type="email" class="form-control no-resize" name="email" value="<?=$get_member[0]->email?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
@@ -165,15 +168,15 @@
             <div class="row">
                  <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="date_of_birth" class="text-uppercase c-gray-light"><?php echo translate('date_of_birth')?> </label>
-                        <input type="date" class="form-control no-resize" name="date_of_birth" value="<?=date('Y-m-d', $get_member[0]->date_of_birth)?>">
+                        <label for="date_of_birth" class="text-uppercase c-gray-light"><?php echo translate('date_of_birth')?> </label> <span style="color:red;font-size:18px;">*</span>
+                        <input type="date" class="form-control no-resize" name="date_of_birth" value="<?=date('Y-m-d', strtotime($get_member[0]->date_of_birth))?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="marital_status" class="text-uppercase c-gray-light"><?php echo translate('marital_status')?></label>
+                        <label for="marital_status" class="text-uppercase c-gray-light"><?php echo translate('marital_status')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php
                             echo $this->Crud_model->select_html('marital_status', 'marital_status', 'name', 'edit', 'form-control form-control-sm selectpicker', $basic_info_data[0]['marital_status'], '', '', '');
                         ?>
@@ -183,17 +186,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+              <!--  <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="number_of_children" class="text-uppercase c-gray-light"><?php echo translate('number_of_children')?></label>
                         <input type="number" class="form-control no-resize" name="number_of_children" value="<?=$basic_info_data[0]['number_of_children']?>" min="0">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
+                </div>-->
+				 <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="mobile" class="text-uppercase c-gray-light"><?php echo translate('mobile')?></label><span style="color:red;font-size:18px;">*</span>
+                        <input type="hidden" name="old_mobile" value="<?=$get_member[0]->mobile?>">
+                        <input type="number" class="form-control no-resize" name="mobile" value="<?=$get_member[0]->mobile?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="area" class="text-uppercase c-gray-light"><?php echo translate('area')?></label>
+                        <label for="area" class="text-uppercase c-gray-light"><?php echo translate('area(residential/working place)')?></label>
                         <input type="text" class="form-control no-resize" name="area" value="<?=$basic_info_data[0]['area']?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
@@ -203,7 +215,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="on_behalf" class="text-uppercase c-gray-light"><?php echo translate('on_behalf')?></label>
+                        <label for="on_behalf" class="text-uppercase c-gray-light"><?php echo translate('on_behalf')?></label><span style="color:red;font-size:18px;">*</span>
                         <?php
                             echo $this->Crud_model->select_html('on_behalf', 'on_behalf', 'name', 'edit', 'form-control form-control-sm selectpicker present_on_behalf_edit', $basic_info_data[0]['on_behalf'], '', '', '');
                         ?>
@@ -211,15 +223,7 @@
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group has-feedback">
-                        <label for="mobile" class="text-uppercase c-gray-light"><?php echo translate('mobile')?></label>
-                        <input type="hidden" name="old_mobile" value="<?=$get_member[0]->mobile?>">
-                        <input type="number" class="form-control no-resize" name="mobile" value="<?=$get_member[0]->mobile?>">
-                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
+               
             </div>
         </form>
     </div>

@@ -16,9 +16,11 @@
                 <button type="button" id="hide_physical_attributes" <?php if ($privacy_status_data[0]['physical_attributes'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('physical_attributes')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('physical_attributes')">
                 <i class="ion-edit"></i>
                 </button>
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">
@@ -58,7 +60,7 @@
                                 <span><?php echo translate('complexion')?></span>
                             </td>
                             <td>
-                                <?=$physical_attributes_data[0]['complexion']?>
+                                <?=isset($physical_attributes_data[0]['complexion'])?$this->Crud_model->get_type_name_by_id('complexion', $physical_attributes_data[0]['complexion']):"";?>
                             </td>
                             <td class="td-label">
                                 <span><?php echo translate('blood_group')?></span>
@@ -69,27 +71,17 @@
                         </tr>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('body_type')?></span>
+								<span><?php echo translate('body_type')?></span>
                             </td>
                             <td>
-                                <?=$physical_attributes_data[0]['body_type']?>
+								<?=isset($physical_attributes_data[0]['body_type'])?$this->Crud_model->get_type_name_by_id('body_type', $physical_attributes_data[0]['body_type']):"";?>
                             </td>
-                            <td class="td-label">
-                                <span><?php echo translate('body_art')?></span>
-                            </td>
-                            <td>
-                                <?=$physical_attributes_data[0]['body_art']?>
-                            </td>
-                        </tr>
-                        <tr>
                             <td class="td-label">
                                 <span><?php echo translate('any_disability')?></span>
                             </td>
                             <td>
                                 <?=$physical_attributes_data[0]['any_disability']?>
                             </td>
-                            <td></td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -155,7 +147,9 @@
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="complexion" class="text-uppercase c-gray-light"><?php echo translate('complexion')?></label>
-                        <input type="text" class="form-control no-resize" name="complexion" value="<?=$physical_attributes_data[0]['complexion']?>">
+                         <?php 
+                            echo $this->Crud_model->select_html('complexion', 'complexion', 'name', 'edit', 'form-control form-control-sm selectpicker complexion_edit', isset($physical_attributes_data[0]['partner_complexion'])?$physical_attributes_data[0]['partner_complexion']:"", '', '', '');
+                        ?>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
@@ -173,21 +167,14 @@
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="body_type" class="text-uppercase c-gray-light"><?php echo translate('body_type')?></label>
-                        <input type="text" class="form-control no-resize" name="body_type" value="<?=$physical_attributes_data[0]['body_type']?>">
+						<?php 
+                            echo $this->Crud_model->select_html('body_type', 'body_type', 'name', 'edit', 'form-control form-control-sm selectpicker body_type_edit', isset($physical_attributes_data[0]['body_type'])?$physical_attributes_data[0]['body_type']:"", '', '', '');
+                        ?>
+                       <!-- <input type="text" class="form-control no-resize" name="body_type" value="<?=$physical_attributes_data[0]['body_type']?>">-->
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group has-feedback">
-                        <label for="body_art" class="text-uppercase c-gray-light"><?php echo translate('body_art')?></label>
-                        <input type="text" class="form-control no-resize" name="body_art" value="<?=$physical_attributes_data[0]['body_art']?>">
-                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="any_disability" class="text-uppercase c-gray-light"><?php echo translate('any_disability')?></label>

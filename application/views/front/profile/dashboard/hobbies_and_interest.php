@@ -15,9 +15,11 @@
                 <button type="button" id="hide_hobbies_and_interest" <?php if ($privacy_status_data[0]['hobbies_and_interest'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('hobbies_and_interest')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('hobbies_and_interest')">
                 <i class="ion-edit"></i>
-                </button> 
+                </button>
+				<?php } ?>				
             </div>
         </div>
         <div class="table-full-width">
@@ -82,7 +84,7 @@
                         </tr>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('cuisine')?></span>
+                                <span><?php echo translate('favourite food')?></span>
                             </td>
                             <td>
                                 <?=$hobbies_and_interest_data[0]['cuisine']?> 
@@ -188,7 +190,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="cuisine" class="text-uppercase c-gray-light"><?php echo translate('cuisine')?></label>
+                        <label for="cuisine" class="text-uppercase c-gray-light"><?php echo translate('favourite food')?></label>
                         <input type="text" class="form-control no-resize" name="cuisine" value="<?=$hobbies_and_interest_data[0]['cuisine']?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>

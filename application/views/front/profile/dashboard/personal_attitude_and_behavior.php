@@ -15,9 +15,11 @@
                 <button type="button" id="hide_personal_attitude_and_behavior" <?php if ($privacy_status_data[0]['personal_attitude_and_behavior'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('personal_attitude_and_behavior')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('personal_attitude_and_behavior')">
                 <i class="ion-edit"></i>
                 </button>  
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">

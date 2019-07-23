@@ -15,9 +15,11 @@
                 <button type="button" id="hide_spiritual_and_social_background" <?php if ($privacy_status_data[0]['spiritual_and_social_background'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('spiritual_and_social_background')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('spiritual_and_social_background')">
                 <i class="ion-edit"></i>
-                </button>  
+                </button> 
+				<?php } ?>				
             </div>
         </div>
         <div class="table-full-width">
@@ -29,27 +31,25 @@
                                 <span><?php echo translate('religion')?></span>
                             </td>
                             <td>
-                                <?=$this->Crud_model->get_type_name_by_id('religion', $spiritual_and_social_background_data[0]['religion']);?>
+                                <?php echo translate('hinduism') ?>
                             </td>
                             <td class="td-label">
                                 <span><?php echo translate('caste_/_sect')?></span>
                             </td>
-                            <td>
-                                <?php echo $this->db->get_where('caste',array('caste_id'=>$spiritual_and_social_background_data[0]['caste']))->row()->caste_name; ?>
+							<td>
+                                <?php echo translate('kamma') ?>
                             </td>
-                        </tr>
+							</tr>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('sub-Caste')?></span>
-                            </td>
-                            <td>
-                                <?php echo $this->db->get_where('sub_caste',array('sub_caste_id'=>$spiritual_and_social_background_data[0]['sub_caste']))->row()->sub_caste_name;?>
-                            </td>
-                            <td class="td-label">
-                                <span><?php echo translate('ethnicity')?></span>
+                                <span><?php echo translate('native place')?></span>
                             </td>
                             <td>
                                 <?=$spiritual_and_social_background_data[0]['ethnicity']?>
+                            </td>
+							 <td class="td-label"><?php echo translate('family_type')?></td>
+                            <td>
+							<?=isset($spiritual_and_social_background_data[0]['family_type'])?$this->Crud_model->get_type_name_by_id('family_type', $spiritual_and_social_background_data[0]['family_type']):"";?>
                             </td>
                         </tr>
                         <tr>
@@ -75,30 +75,17 @@
                                 <?=$spiritual_and_social_background_data[0]['community_value']?>
                             </td>
                             <td class="td-label">
-                                <span><?php echo translate('family_status')?></span>
+                                <span><?php echo translate('financial_status')?></span>
                             </td>
                             <td>
                                 <?=$this->Crud_model->get_type_name_by_id('family_status', $spiritual_and_social_background_data[0]['family_status']);?>
                             </td>
                         </tr>
                         <tr>
-                            <td class="td-label"><?php echo translate('manglik')?></td>
-                            <td><?php $u_manglik=$spiritual_and_social_background_data[0]['u_manglik'];
-
-                                    if($u_manglik == 1){
-                                        echo "Yes";
-                                    }elseif($u_manglik == 2){
-                                        echo "No";
-                                    }
-                                    elseif($u_manglik == 3){
-                                        echo "I don't know";
-                                    }else{
-                                        echo " ";
-                                    }
-                                ?>
-                            </td>
-                            <td></td>
-                            <td></td>
+                            <td class="td-label"><?php echo translate('dosham')?></td>
+                            <td>
+							<?=isset($spiritual_and_social_background_data[0]['u_manglik'])?$this->Crud_model->get_type_name_by_id('dosham', $spiritual_and_social_background_data[0]['u_manglik']):"";?>
+							</td>
                         </tr>
                     </tbody>
                 </table>
@@ -123,9 +110,7 @@
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="religion" class="text-uppercase c-gray-light"><?php echo translate('religion')?></label>
-                        <?php 
-                            echo $this->Crud_model->select_html('religion', 'religion', 'name', 'edit', 'form-control form-control-sm selectpicker present_religion_edit', $spiritual_and_social_background_data[0]['religion'], '', '', '');
-                        ?>
+                        <input type="text" class="form-control no-resize" name="religion" value="<?php echo translate('hinduism')?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
@@ -133,17 +118,7 @@
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="caste" class="text-uppercase c-gray-light"><?php echo translate('caste')?></label>
-                        <?php
-                            if (!empty($spiritual_and_social_background_data[0]['religion'])) {
-                                echo $this->Crud_model->select_html('caste', 'caste', 'caste_name', 'edit', 'form-control form-control-sm selectpicker present_caste_edit', $spiritual_and_social_background_data[0]['caste'], 'religion_id', $spiritual_and_social_background_data[0]['religion'], '');   
-                            } else {
-                            ?>
-                                <select class="form-control form-control-sm selectpicker present_caste_edit" name="caste">
-                                    <option value=""><?php echo translate('choose_a_religion_first')?></option>
-                                </select>
-                            <?php
-                            }
-                        ?>
+                        <input type="text" class="form-control no-resize" name="religion" value="<?php echo translate('kamma')?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
@@ -152,26 +127,18 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="sub_caste" class="text-uppercase c-gray-light"><?php echo translate('sub_caste')?></label>
-                        <?php
-                            if (!empty($spiritual_and_social_background_data[0]['caste'])) {
-                                echo $this->Crud_model->select_html('sub_caste', 'sub_caste', 'sub_caste_name', 'edit', 'form-control form-control-sm selectpicker present_sub_caste_edit', $spiritual_and_social_background_data[0]['sub_caste'], 'caste_id', $spiritual_and_social_background_data[0]['caste'], '');  
-                            } else {
-                            ?>
-                                <select class="form-control form-control-sm selectpicker present_sub_caste_edit" name="sub_caste">
-                                    <option value=""><?php echo translate('choose_a_caste_first')?></option>
-                                </select>
-                            <?php
-                            }
-                        ?>
+                        <label for="ethnicity" class="text-uppercase c-gray-light"><?php echo translate('native place')?></label>
+                        <input type="text" class="form-control no-resize" name="ethnicity" value="<?=$spiritual_and_social_background_data[0]['ethnicity']?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
-                <div class="col-md-6">
+				 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="ethnicity" class="text-uppercase c-gray-light"><?php echo translate('ethnicity')?></label>
-                        <input type="text" class="form-control no-resize" name="ethnicity" value="<?=$spiritual_and_social_background_data[0]['ethnicity']?>">
+                        <label for="family_type" class="text-uppercase c-gray-light"><?php echo translate('family_type')?></label>
+                       <?php 
+                            echo $this->Crud_model->select_html('family_type', 'family_type', 'name', 'edit', 'form-control form-control-sm selectpicker family_type_edit', isset($spiritual_and_social_background_data[0]['family_type'])?$spiritual_and_social_background_data[0]['family_type']:"", '', '', '');
+                        ?>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
@@ -208,7 +175,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="family_value" class="text-uppercase c-gray-light"><?php echo translate('family_status')?></label>
+                        <label for="family_value" class="text-uppercase c-gray-light"><?php echo translate('financial_status')?></label>
                         <?php 
                             echo $this->Crud_model->select_html('family_status', 'family_status', 'name', 'edit', 'form-control form-control-sm selectpicker family_status_edit', $spiritual_and_social_background_data[0]['family_status'], '', '', '');
                         ?>
@@ -220,17 +187,19 @@
             <div class="row">
                  <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="u_manglik" class="text-uppercase c-gray-light"><?php echo translate('manglik')?></label>
+                        <label for="u_manglik" class="text-uppercase c-gray-light"><?php echo translate('dosham')?></label>
 
-                        <select name="u_manglik" class="form-control form-control-sm selectpicker" data-placeholder="Choose a manglik" tabindex="2" data-hide-disabled="true">
+                        <!--<select name="u_manglik" class="form-control form-control-sm selectpicker" data-placeholder="Choose a manglik" tabindex="2" data-hide-disabled="true">
                             <option value="">Choose one</option>
-                            <option value="1" <?php if($u_manglik==1){ echo 'selected';} ?>>Yes</option>
-                            <option value="2" <?php if($u_manglik==2){ echo 'selected';} ?>>No</option>
-                            <option value="3" <?php if($u_manglik==3){ echo 'selected';} ?>>I don't know</option>
-                        </select>
-                        <!-- <?php 
-                            echo $this->Crud_model->select_html('decision', 'manglik', 'name', 'edit', 'form-control form-control-sm selectpicker', $spiritual_and_social_background_data[0]['manglik'], '', '', '');
-                        ?> -->
+                            <option value="1" <?php if($u_manglik==1){ echo 'selected';} ?>>Kuja Dosham</option>
+                            <option value="2" <?php if($u_manglik==2){ echo 'selected';} ?>>No Dosham</option>
+							<option value="3" <?php if($u_manglik==3){ echo 'selected';} ?>>Kala Sarpa</option>
+							<option value="4" <?php if($u_manglik==4){ echo 'selected';} ?>>Rahu Dosham</option>
+                            <option value="5" <?php if($u_manglik==5){ echo 'selected';} ?>>I don't know</option>
+                        </select>-->
+                         <?php 
+                            echo $this->Crud_model->select_html('dosham', 'u_manglik', 'name', 'edit', 'form-control form-control-sm selectpicker dosham_edit', isset($spiritual_and_social_background_data[0]['u_manglik'])?$spiritual_and_social_background_data[0]['u_manglik']:"", '', '', '');
+                        ?> 
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>

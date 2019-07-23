@@ -15,9 +15,11 @@
                 <button type="button" id="hide_life_style" <?php if ($privacy_status_data[0]['life_style'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('life_style')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
+				<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('life_style')">
                 <i class="ion-edit"></i>
                 </button>  
+				<?php } ?>
             </div>
         </div>
         <div class="table-full-width">
@@ -26,10 +28,10 @@
                     <tbody>
                         <tr>
                             <td class="td-label">
-                                <span><?php echo translate('diet')?></span>
+                                <span><?php echo translate('eating_habits')?></span>
                             </td>
                             <td>
-                                <?=$life_style_data[0]['diet']?>
+                            	<?=isset($life_style_data[0]['diet'])?$this->Crud_model->get_type_name_by_id('diet', $life_style_data[0]['diet']):"";?>
                             </td>
                             <td class="td-label">
                                 <span><?php echo translate('drink')?></span>
@@ -75,7 +77,10 @@
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
                         <label for="diet" class="text-uppercase c-gray-light"><?php echo translate('diet')?></label>
-                        <input type="text" class="form-control no-resize" name="diet" value="<?=$life_style_data[0]['diet']?>">
+						<?php 
+                            echo $this->Crud_model->select_html('diet', 'diet', 'name', 'edit', 'form-control form-control-sm selectpicker diet_edit', isset($life_style_data[0]['diet'])?$life_style_data[0]['diet']:"", '', '', '');
+                        ?>
+                       <!-- <input type="text" class="form-control no-resize" name="diet" value="<?=$life_style_data[0]['diet']?>">-->
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>

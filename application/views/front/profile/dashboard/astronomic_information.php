@@ -6,7 +6,7 @@
     <div id="info_astronomic_information">
         <div class="card-inner-title-wrapper pt-0">
             <h3 class="card-inner-title pull-left">
-                <?php echo translate('astronomic_information')?>
+                <?php echo translate('astrology')?>
             </h3>
             <div class="pull-right">
                 <button type="button" id="unhide_astronomic_information" <?php if ($privacy_status_data[0]['astronomic_information'] == 'yes') {?> style="display: none" <?php }?> class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="unhide_section('astronomic_information')">
@@ -32,10 +32,10 @@
                                 <?=$astronomic_information_data[0]['sun_sign']?>
                             </td>
                             <td class="td-label">
-                                <span><?php echo translate('moon_sign')?></span>
+                                <span><?php echo translate('rasi')?></span>
                             </td>
                             <td>
-                                <?=$astronomic_information_data[0]['moon_sign']?>
+							<?=$this->Crud_model->get_type_name_by_id('rasi', $astronomic_information_data[0]['moon_sign']);?>
                             </td>
                         </tr>
                         <tr>
@@ -52,6 +52,20 @@
                                 <?=$astronomic_information_data[0]['time_of_birth']?>
                             </td>
                         </tr>
+						 <tr>
+                           <td class="td-label">
+                                <span><?php echo translate('nakshatram')?></span>
+                            </td>
+                            <td>
+							<?=isset($astronomic_information_data[0]['nakshatram'])?$this->Crud_model->get_type_name_by_id('nakshatram', $astronomic_information_data[0]['nakshatram']):"";?>
+                            </td>
+                            <td class="td-label">
+                                <span><?php echo translate('gothram')?></span>
+                            </td>
+                            <td>
+                                <?=isset($astronomic_information_data[0]['gothram'])?$astronomic_information_data[0]['gothram']:""?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -61,7 +75,7 @@
     <div id="edit_astronomic_information" style="display: none;">
         <div class="card-inner-title-wrapper pt-0">
             <h3 class="card-inner-title pull-left">
-                <?php echo translate('astronomic_information')?>
+                <?php echo translate('astrology')?>
             </h3>
             <div class="pull-right">
                 <button type="button" class="btn btn-success btn-sm btn-icon-only btn-shadow" onclick="save_section('astronomic_information')"><i class="ion-checkmark"></i></button>
@@ -82,8 +96,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="moon_sign" class="text-uppercase c-gray-light"><?php echo translate('moon_sign')?></label>
-                        <input type="text" class="form-control no-resize" name="moon_sign" value="<?=$astronomic_information_data[0]['moon_sign']?>">
+                        <label for="moon_sign" class="text-uppercase c-gray-light"><?php echo translate('rasi')?></label><span style="color:red;font-size:18px;">*</span>
+						<?php 
+                            echo $this->Crud_model->select_html('rasi', 'moon_sign', 'name', 'edit', 'form-control form-control-sm selectpicker moon_sign_edit', $astronomic_information_data[0]['moon_sign'], '', '', '');
+                        ?>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>
@@ -92,7 +108,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="time_of_birth" class="text-uppercase c-gray-light"><?php echo translate('time_of_birth')?></label>
+                        <label for="time_of_birth" class="text-uppercase c-gray-light"><?php echo translate('time_of_birth')?></label><span style="color:red;font-size:18px;">*</span>
                         <input type="text" class="form-control no-resize" name="time_of_birth" value="<?=$astronomic_information_data[0]['time_of_birth']?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
@@ -100,8 +116,28 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group has-feedback">
-                        <label for="city_of_birth" class="text-uppercase c-gray-light"><?php echo translate('city_of_birth')?></label>
+                        <label for="city_of_birth" class="text-uppercase c-gray-light"><?php echo translate('city_of_birth')?></label><span style="color:red;font-size:18px;">*</span>
                         <input type="text" class="form-control no-resize" name="city_of_birth" value="<?=$astronomic_information_data[0]['city_of_birth']?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="nakshatram" class="text-uppercase c-gray-light"><?php echo translate('nakshatram')?></label><span style="color:red;font-size:18px;">*</span>
+                       <?php 
+                            echo $this->Crud_model->select_html('nakshatram', 'nakshatram', 'name', 'edit', 'form-control form-control-sm selectpicker nakshatram_edit', isset($astronomic_information_data[0]['nakshatram'])?$astronomic_information_data[0]['nakshatram']:"", '', '', '');
+                        ?>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="gothram" class="text-uppercase c-gray-light"><?php echo translate('gothram')?></label><span style="color:red;font-size:18px;">*</span>
+                        <input type="text" class="form-control no-resize" name="gothram" value="<?=isset($astronomic_information_data[0]['gothram'])?$astronomic_information_data[0]['gothram']:""?>">
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <div class="help-block with-errors"></div>
                     </div>

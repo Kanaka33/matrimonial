@@ -15,15 +15,89 @@
                 <button type="button" id="hide_present_address" <?php if ($privacy_status_data[0]['present_address'] == 'no') {?> style="display: none" <?php }?> class="btn btn-dark btn-sm btn-icon-only btn-shadow mb-1" onclick="hide_section('present_address')">
                 <i class="fa fa-lock"></i> <?=translate('hide')?>
                 </button>
-                <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('present_address')">
+				<?php if($get_member[0]->is_submit==0){ ?>
+				<button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('present_address')">
                 <i class="ion-edit"></i>
-                </button>              
+                </button> 
+				<?php } ?>				
             </div>
         </div>
         <div class="table-full-width">
             <div class="table-full-width">
                 <table class="table table-profile table-responsive table-striped table-bordered table-slick">
                     <tbody>
+						<tr>
+                            <td class="td-label">
+                                <span><?php echo translate('House/door No')?></span>
+                            </td>
+							<?php 
+							if (!empty($present_address_data[0]['present_doornumber']) && 
+							$present_address_data[0]['present_doornumber'] != '') {
+							?>
+                            <td>
+                               <?=$present_address_data[0]['present_doornumber']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                            <td class="td-label">
+                                <span><?php echo translate('street_Name')?></span>
+                            </td>
+							<?php 
+							if (!empty($present_address_data[0]['present_street_name']) && 
+							$present_address_data[0]['present_street_name'] != '') {
+							?>
+                            <td>
+                                <?=$present_address_data[0]['present_street_name']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                        </tr>
+						<tr>
+                            <td class="td-label">
+                                <span><?php echo translate('landmark')?></span>
+                            </td>
+							<?php 
+							if (!empty($present_address_data[0]['present_landmark']) && 
+							$present_address_data[0]['present_landmark'] != '') {
+							?>
+                            <td>
+                               <?=$present_address_data[0]['present_landmark']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                            <td class="td-label">
+                                <span><?php echo translate('village/Town')?></span>
+                            </td>
+							<?php 
+							if (!empty($present_address_data[0]['present_village']) && 
+							$present_address_data[0]['present_village'] != '') {
+							?>
+                            <td>
+                                <?=$present_address_data[0]['present_village']?>
+                            </td>
+							<?php
+							}else{
+							?>
+							<td class="td-label"></td>
+							<?php
+							}
+							?>
+                        </tr>
                         <tr>
                             <td class="td-label">
                                 <span><?php echo translate('country')?></span>
@@ -71,6 +145,42 @@
         
         <div class='clearfix'></div>
         <form id="form_present_address" class="form-default" role="form">
+		<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="present_doornumber" class="text-uppercase c-gray-light"><?php echo translate('House/Door number')?></label>
+                        <input type="text" class="form-control no-resize" name="present_doornumber" value="<?=!empty($present_address_data[0]['present_doornumber'])?$present_address_data[0]['present_doornumber']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="present_street_name" class="text-uppercase c-gray-light"><?php echo translate('street_name')?></label>
+                        <input type="text" class="form-control no-resize" name="present_street_name" value="<?=!empty($present_address_data[0]['present_street_name'])?$present_address_data[0]['present_street_name']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="present_landmark" class="text-uppercase c-gray-light"><?php echo translate('landmark')?></label>
+                        <input type="text" class="form-control no-resize" name="present_landmark" value="<?=!empty($present_address_data[0]['present_landmark'])?$present_address_data[0]['present_landmark']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback">
+                        <label for="present_village" class="text-uppercase c-gray-light"><?php echo translate('street_name')?></label>
+                        <input type="text" class="form-control no-resize" name="present_village" value="<?=!empty($present_address_data[0]['present_village'])?$present_address_data[0]['present_village']:""?>">
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group has-feedback">

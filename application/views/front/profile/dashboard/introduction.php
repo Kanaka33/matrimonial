@@ -8,9 +8,11 @@
                 <?php echo translate('introduction')?>
             </h3>
             <div class="pull-right">
+			<?php if($get_member[0]->is_submit==0){ ?>
                 <button type="button" class="btn btn-base-1 btn-sm btn-icon-only btn-shadow mb-1" onclick="edit_section('introduction')">
                 <i class="ion-edit"></i>
                 </button>
+			<?php } ?>
             </div>
         </div>
         <div class="table-full-width">
