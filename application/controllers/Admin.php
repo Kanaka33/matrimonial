@@ -405,6 +405,7 @@ class Admin extends CI_Controller {
 							4 =>'follower',
                             5 =>'reported_by',
                             6 =>'member_since',
+							7 =>'is_submit'
                         );
 					} else{
 						$columns = array(
@@ -414,6 +415,7 @@ class Admin extends CI_Controller {
 							3 =>'follower',
                             4 =>'reported_by',
                             5 =>'member_since',
+							6 =>'is_submit'
                         );
 					}
 		        	
@@ -428,6 +430,7 @@ class Admin extends CI_Controller {
                             4 =>'follower',
 							5 =>'reported_by',
                             6 =>'member_since',
+							7 =>'is_submit'
                         );
 		        	} else{
 		        		$columns = array(
@@ -437,6 +440,7 @@ class Admin extends CI_Controller {
                             3 =>'follower',
 							4 =>'reported_by',
                             5 =>'member_since',
+							6 =>'is_submit'
                         );
 		        	}
 		        	
@@ -444,8 +448,6 @@ class Admin extends CI_Controller {
 
 				$limit = $this->input->post('length');
 		        $start = $this->input->post('start');
-		        // $order = $columns[$this->input->post('order')[0]['column']];
-		        // $dir = $this->input->post('order')[0]['dir'];
 		        $order = 'member_id';
 		        $dir = 'desc';
 
@@ -520,12 +522,30 @@ class Admin extends CI_Controller {
 						{
 							$status_button = '';
 						}
-
-						
-
-
+						if ($member_approval == 'yes') {
+							if ($member->is_submit == "1")
+							{
+								$unlock_button = "<button data-target='#unlock_modal' data-toggle='modal' class='btn btn-info btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title= '".translate('unlock')."' onclick='unlock(".$member->member_id.")'><i class='fa fa-unlock-alt'></i></button>
+								";
+							}else {
+								$unlock_button = '';
+							}
+						}
+						else
+						{
+							$unlock_button = '';
+						}
+						if($member->membership != 2){
+							$premium_button = "<button data-target='#premium_modal' data-toggle='modal' class='btn btn-info btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('premium')."' onclick='change_to_premium(".$member->member_id.")'><i class='fa fa-user-plus'></i></button>";
+						}else{
+							$premium_button = '';
+							
+						}
 		                $nestedData['image'] = $member_image;
 						$nestedData['name'] = $member->first_name.' '.$member->last_name;
+						$nestedData['member_id'] = $member->member_profile_id;
+						$nestedData['follower'] = $member->follower;
+		                $nestedData['profile_reported'] = $member->reported_by;
 						if ($member->status == "pending")
 						{
 							$nestedData['status'] = "<button  data-toggle='modal' class='badge badge-info' >".translate('pending')."</button>
@@ -535,10 +555,6 @@ class Admin extends CI_Controller {
 							$nestedData['status'] = "<button   class='badge badge-success' >".translate('approved')."</i></button>
 							";
 						}
-		                $nestedData['member_id'] = $member->member_profile_id;
-						$nestedData['follower'] = $member->follower;
-		                $nestedData['profile_reported'] = $member->reported_by;
-
 		                if ($para1=="premium_members") {
 		                	$package_info = $this->db->get_where('member', array('member_id' => $member->member_id))->row()->package_info;
                 			$package_info = json_decode($package_info, true);
@@ -546,11 +562,9 @@ class Admin extends CI_Controller {
 		                }
 		                $nestedData['member_since'] = date('d/m/Y H:i:s A', strtotime($member->member_since));
 		                $nestedData['member_status'] = $acnt_status_button;
-		                $nestedData['options'] = "<a href='".base_url()."admin/members/".$para1."/view_member/".$member->member_id."' id='demo-dt-view-btn' class='btn btn-primary btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('view_profile')."' ><i class='fa fa-eye'></i></a>
-							<a href='#' id='demo-dt-delete-btn' data-target='#package_modal' data-toggle='modal' class='btn btn-info btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('packages')."' onclick='view_package(".$member->member_id.")'><i class='fa fa-object-ungroup'></i></a> ".$block_button."<button data-target='#delete_modal' data-toggle='modal' class='btn btn-danger btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('delete_member')."' onclick='delete_member(".$member->member_id.")'><i class='fa fa-trash'></i></button>".$status_button."";
+		                $nestedData['options'] = "<a href='".base_url()."admin/members/".$para1."/view_member/".$member->member_id."' id='demo-dt-view-btn' class='btn btn-primary btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('view_profile')."' ><i class='fa fa-eye'></i></a>".$premium_button.$block_button."<button data-target='#delete_modal' data-toggle='modal' class='btn btn-danger btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='".translate('delete_member')."' onclick='delete_member(".$member->member_id.")'><i class='fa fa-trash'></i></button>".$status_button."".$unlock_button."";
 
 		                $data[] = $nestedData;
-		                // if ($dir == 'asc') { $i++; } elseif ($dir == 'desc') { $i--; }
 		            }
 		        }
 
@@ -655,6 +669,7 @@ class Admin extends CI_Controller {
 		            $this->form_validation->set_rules('email', 'Email', 'required|is_unique[member.email]',array('required' => 'The %s is required.', 'is_unique' => 'This %s already exists.'));
 	                $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
 		            $this->form_validation->set_rules('mobile', 'Mobile Number', 'required');
+					$this->form_validation->set_rules('aadharnumber', 'Aadhar Number', 'required|is_unique[member.aadharnumber]',array('required' => 'The %s is required.', 'is_unique' => 'This %s already exists.'));
 		            $this->form_validation->set_rules('password', 'Password', 'required');
 		            $this->form_validation->set_rules('cpassword', 'Confirm Password', 'required|matches[password]');
 
@@ -689,7 +704,11 @@ class Admin extends CI_Controller {
 	                    // ------------------------------------Basic Info------------------------------------ //
 
 	                    // ------------------------------------Present Address------------------------------------ //
-	                    $present_address[] = array('country'        => '',
+	                    $present_address[] = array('present_doornumber'    =>  '',
+											'present_street_name'          =>  '',
+											'present_landmark'      =>  '',
+											'present_village'       =>  '',
+											'country'               => '',
 	                                        'city'                  => '',
 	                                        'state'                 => '',
 	                                        'postal_code'           => ''
@@ -698,9 +717,15 @@ class Admin extends CI_Controller {
 	                    // ------------------------------------Present Address------------------------------------ //
 
 	                    // ------------------------------------Education & Career------------------------------------ //
-	                    $education_and_career[] = array('highest_education' => '',
-	                                        'occupation'                    => '',
-	                                        'annual_income'                 => ''
+	                    $education_and_career[] = array('secondary_education' => '',
+											'intermediate' 					  => '',
+											'diploma' 						  => '',
+											'degree' 						  => '',
+											'engineering' 					  => '',
+											'highest_education' 			  => '',
+	                                        'occupation'                      => '',
+											'current_workplace' 			  => '',
+	                                        'annual_income'                   => ''
 	                                        );
 	                    $education_and_career = json_encode($education_and_career);
 	                    // ------------------------------------Education & Career------------------------------------ //
@@ -770,7 +795,8 @@ class Admin extends CI_Controller {
 	                                        'personal_value'        => '',
 	                                        'family_value'          => '',
 	                                        'community_value'       => '',
-                                    		'family_status'          =>  ''
+                                    		'family_status'         => '',
+											'family_type'			=> ''
 	                                        );
 	                    $spiritual_and_social_background = json_encode($spiritual_and_social_background);
 	                    // ------------------------------------Spiritual and Social Background------------------------------------ //
@@ -794,7 +820,11 @@ class Admin extends CI_Controller {
 	                    // ------------------------------------ Astronomic Information------------------------------------ //
 
 	                    // ------------------------------------Permanent Address------------------------------------ //
-	                    $permanent_address[] = array('permanent_country'    => '',
+	                    $permanent_address[] = array('permanent_doornumber'    =>  '',
+											'permanent_street_name'         => '',
+											'permanent_landmark'            =>  '',
+											'permanent_village'             => '',
+											'permanent_country'             => '',
 	                                        'permanent_city'                => '',
 	                                        'permanent_state'               => '',
 	                                        'permanent_postal_code'         => ''
@@ -805,7 +835,44 @@ class Admin extends CI_Controller {
 	                    // ------------------------------------Family Information------------------------------------ //
 	                    $family_info[] = array('father'             => '',
 	                                        'mother'                => '',
-	                                        'brother_sister'        => ''
+	                                        'fathernumber'          => '',
+											'mothernumber'          => '',
+											'ffather'               => '',
+                                            'fmother'               => '',
+											'mfather'               => '',
+											'mmother'               => '',
+											'no_sister'        		=> '',
+											'sister1married'		=> '',
+											'sister2married'		=> '',
+											'sister3married'		=> '',
+											'name_sister1'        	=> '',
+											'name_sister2'        	=> '',
+											'name_sister3'        	=> '',
+											'name_sister1husband'   => '',
+											'name_sister2husband'   => '',
+											'name_sister3husband'   => '',
+											'number_sister1'        => '',
+											'number_sister2'        => '',
+											'number_sister3'        => '',
+											'address_sister1'       => '',
+											'address_sister2'       => '',
+											'address_sister3'       => '',
+											'no_brother'        	=> '',
+											'name_brother1'       	=> '',
+											'name_brother2'       	=> '',
+											'name_brother3'       	=> '',
+											'brother1married'       => '',
+											'brother2married'       => '',
+											'brother3married'       => '',
+											'brother1working'       => '',
+											'brother2working'       => '',
+											'brother3working'       => '',
+											'name_brother1wife'     => '',
+											'name_brother2wife'     => '',
+											'name_brother3wife'     => '',
+											'address_brother1'      => '',
+											'address_brother2'      => '',
+											'address_brother3'      => ''
 	                                        );
 	                    $family_info = json_encode($family_info);
 	                    // ------------------------------------Family Information------------------------------------ //
@@ -814,14 +881,16 @@ class Admin extends CI_Controller {
 	                    $additional_personal_details[] = array('home_district'  => '',
 	                                        'family_residence'              => '',
 	                                        'fathers_occupation'            => '',
-	                                        'special_circumstances'         => ''
+	                                        'special_circumstances'         => '',
+											'property'        			    => ''
 	                                        );
 	                    $additional_personal_details = json_encode($additional_personal_details);
 	                    // --------------------------------- Additional Personal Details--------------------------------- //
 
 	                    // ------------------------------------ Partner Expectation------------------------------------ //
 	                    $partner_expectation[] = array('general_requirement'    => '',
-	                                        'partner_age'                       => '',
+											'partner_age_from'                  => '',			
+	                                        'partner_age_to'                    => '',
 	                                        'partner_height'                    => '',
 	                                        'partner_weight'                    => '',
 	                                        'partner_marital_status'            => '',
@@ -892,7 +961,8 @@ class Admin extends CI_Controller {
 	                        $data['last_name'] = $this->input->post('lname');
 	                        $data['gender'] = $this->input->post('gender');
 	                        $data['email'] = $this->input->post('email');
-	                        $data['date_of_birth'] = strtotime($this->input->post('date_of_birth'));
+	                        $data['date_of_birth'] = $this->input->post('date_of_birth');
+							$data['aadharnumber'] = $this->input->post('aadharnumber');
 	                        $data['height'] = 0.00;
 	                        $data['mobile'] = $this->input->post('mobile');
 	                        $data['password'] = sha1($this->input->post('password'));
@@ -986,7 +1056,9 @@ class Admin extends CI_Controller {
 	            }
 	            $this->form_validation->set_rules('marital_status', 'Marital Status', 'required');
 				$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
-
+				if ($this->input->post('old_aadharnumber') != $this->input->post('aadharnumber')) {
+	                $this->form_validation->set_rules('aadharnumber', 'Aadhar Number', 'required|is_unique[member.aadharnumber]',array('required' => 'The %s is required.', 'is_unique' => 'This %s already exists.'));
+	            }
 				if ($this->db->get_where('frontend_settings', array('type' => 'present_address'))->row()->value == "yes")
 				{
 					$this->form_validation->set_rules('country', 'Country', 'required');
@@ -997,6 +1069,8 @@ class Admin extends CI_Controller {
 				{
 		            $this->form_validation->set_rules('highest_education', 'Highest Education', 'required');
 		            $this->form_validation->set_rules('occupation', 'Occupation', 'required');
+					$this->form_validation->set_rules('current_workplace', 'Current Workplace', 'required');
+					$this->form_validation->set_rules('annual_income', 'Annual Income', 'required');
 				}
 
 				if ($this->db->get_where('frontend_settings', array('type' => 'language'))->row()->value == "yes")
@@ -1014,7 +1088,12 @@ class Admin extends CI_Controller {
 				{
 		            $this->form_validation->set_rules('religion', 'Religion', 'required');
 				}
-
+				
+				if ($this->db->get_where('frontend_settings', array('type' => 'additional_personal_details'))->row()->value == "yes")
+				{
+		            $this->form_validation->set_rules('property', 'Property', 'required');
+				}
+				
 				if ($this->db->get_where('frontend_settings', array('type' => 'permanent_address'))->row()->value == "yes")
 				{
 		            $this->form_validation->set_rules('permanent_country', 'Permanent Country', 'required');
@@ -1051,7 +1130,8 @@ class Admin extends CI_Controller {
 	            	$data['gender'] = $this->input->post('gender');
 	            	$data['email'] = $this->input->post('email');
 	                $data['mobile'] = $this->input->post('mobile');
-	                $data['date_of_birth'] = strtotime($this->input->post('date_of_birth'));
+	                $data['date_of_birth'] = $this->input->post('date_of_birth');
+					$data['aadharnumber'] = $this->input->post('aadharnumber');
 	                $data['height'] = $this->input->post('height');
 	            	$data['introduction'] = $this->input->post('introduction');
 
@@ -1066,7 +1146,11 @@ class Admin extends CI_Controller {
 	            	// ------------------------------------Basic Info------------------------------------ //
 
 	            	// ------------------------------------Present Address------------------------------------ //
-	            	$present_address[] = array('country'		=>  $this->input->post('country'),
+	            	$present_address[] = array('present_doornumber'    =>  $this->input->post('present_doornumber'),
+										'present_street_name'                =>  $this->input->post('present_street_name'),
+										'present_landmark'    =>  $this->input->post('present_landmark'),
+										'present_village'                =>  $this->input->post('present_village'),
+										'country'		=>  $this->input->post('country'),
 	    								'city'					=>	$this->input->post('city'),
 	    								'state'					=>	$this->input->post('state'),
 	    								'postal_code'			=>	$this->input->post('postal_code')
@@ -1075,8 +1159,14 @@ class Admin extends CI_Controller {
 	            	// ------------------------------------Present Address------------------------------------ //
 
 	            	// ------------------------------------Education & Career------------------------------------ //
-	            	$education_and_career[] = array('highest_education'	=>  $this->input->post('highest_education'),
+	            	$education_and_career[] = array('secondary_education' =>  $this->input->post('secondary_education'),
+										'intermediate' =>  $this->input->post('intermediate'),
+										'diploma' =>  $this->input->post('diploma'),
+										'degree' =>  $this->input->post('degree'),
+										'engineering' =>  $this->input->post('engineering'),
+										'highest_education'	=>  $this->input->post('highest_education'),
 	    								'occupation'					=>	$this->input->post('occupation'),
+										'current_workplace'			  =>  $this->input->post('current_workplace'),
 	    								'annual_income'					=>	$this->input->post('annual_income')
 				                        );
 	            	$data['education_and_career'] = json_encode($education_and_career);
@@ -1147,7 +1237,8 @@ class Admin extends CI_Controller {
 	    								'family_value'			=>	$this->input->post('family_value'),
 	                                    'u_manglik'             =>  $this->input->post('u_manglik'),
 	    								'community_value'		=>	$this->input->post('community_value'),
-	                                    'family_status'         =>  $this->input->post('family_status')
+	                                    'family_status'         =>  $this->input->post('family_status'),
+										'family_type'         	=>  $this->input->post('family_type')
 				                        );
 	            	$data['spiritual_and_social_background'] = json_encode($spiritual_and_social_background);
 	            	// ------------------------------------Spiritual and Social Background------------------------------------ //
@@ -1165,13 +1256,19 @@ class Admin extends CI_Controller {
 	            	$astronomic_information[] = array('sun_sign'	=>  $this->input->post('sun_sign'),
 	    								'moon_sign'					=>	$this->input->post('moon_sign'),
 	    								'time_of_birth'				=>	$this->input->post('time_of_birth'),
-	    								'city_of_birth'				=>	$this->input->post('city_of_birth')
+	    								'city_of_birth'				=>	$this->input->post('city_of_birth'),
+										'nakshatram'				=>  $this->input->post('nakshatram'),
+										'gothram' 					=>  $this->input->post('gothram')
 				                        );
 	            	$data['astronomic_information'] = json_encode($astronomic_information);
 	            	// ------------------------------------ Astronomic Information------------------------------------ //
 
 	            	// ------------------------------------Permanent Address------------------------------------ //
-	            	$permanent_address[] = array('permanent_country'	=>  $this->input->post('permanent_country'),
+	            	$permanent_address[] = array('permanent_doornumber'    =>  $this->input->post('permanent_doornumber'),
+										'permanent_street_name'                =>  $this->input->post('permanent_street_name'),
+										'permanent_landmark'    =>  $this->input->post('permanent_landmark'),
+										'permanent_village'                =>  $this->input->post('permanent_village'),
+										'permanent_country'	=>  $this->input->post('permanent_country'),
 	    								'permanent_city'				=>	$this->input->post('permanent_city'),
 	    								'permanent_state'				=>	$this->input->post('permanent_state'),
 	    								'permanent_postal_code'			=>	$this->input->post('permanent_postal_code')
@@ -1182,7 +1279,44 @@ class Admin extends CI_Controller {
 	            	// ------------------------------------Family Information------------------------------------ //
 	            	$family_info[] = array('father'				=>  $this->input->post('father'),
 	    								'mother'				=>	$this->input->post('mother'),
-	    								'brother_sister'		=>	$this->input->post('brother_sister')
+	    								'fathernumber'          =>  $this->input->post('fathernumber'),
+                                    'mothernumber'          =>  $this->input->post('mothernumber'),
+									'ffather'             =>  $this->input->post('ffather'),
+                                    'fmother'                =>  $this->input->post('fmother'),
+									'mfather'             =>  $this->input->post('mfather'),
+                                    'mmother'                =>  $this->input->post('mmother'),
+                                    'no_sister'        		=>  $this->input->post('no_sister'),
+									'sister1married'		=>  $this->input->post('sister1married'),
+									'sister2married'		=>  $this->input->post('sister2married'),
+									'sister3married'		=>  $this->input->post('sister3married'),
+									'name_sister1'        	=>  $this->input->post('name_sister1'),
+									'name_sister2'        	=>  $this->input->post('name_sister2'),
+									'name_sister3'        	=>  $this->input->post('name_sister3'),
+									'name_sister1husband'   =>  $this->input->post('name_sister1husband'),
+									'name_sister2husband'   =>  $this->input->post('name_sister2husband'),
+									'name_sister3husband'   =>  $this->input->post('name_sister3husband'),
+									'number_sister1'        =>  $this->input->post('number_sister1'),
+									'number_sister2'        =>  $this->input->post('number_sister2'),
+									'number_sister3'        =>  $this->input->post('number_sister3'),
+									'address_sister1'       =>  $this->input->post('address_sister1'),
+									'address_sister2'       =>  $this->input->post('address_sister2'),
+									'address_sister3'       =>  $this->input->post('address_sister3'),
+									'no_brother'        	=>  $this->input->post('no_brother'),
+									'name_brother1'       	=>  $this->input->post('name_brother1'),
+									'name_brother2'       	=>  $this->input->post('name_brother2'),
+									'name_brother3'       	=>  $this->input->post('name_brother3'),
+									'brother1married'       =>  $this->input->post('brother1married'),
+									'brother2married'       =>  $this->input->post('brother2married'),
+									'brother3married'       =>  $this->input->post('brother3married'),
+									'brother1working'       =>  $this->input->post('brother1working'),
+									'brother2working'       =>  $this->input->post('brother2working'),
+									'brother3working'       =>  $this->input->post('brother3working'),
+									'name_brother1wife'     =>  $this->input->post('name_brother1wife'),
+									'name_brother2wife'     =>  $this->input->post('name_brother2wife'),
+									'name_brother3wife'     =>  $this->input->post('name_brother3wife'),
+									'address_brother1'      =>  $this->input->post('address_brother1'),
+									'address_brother2'      =>  $this->input->post('address_brother2'),
+									'address_brother3'      =>  $this->input->post('address_brother3')
 				                        );
 	            	$data['family_info'] = json_encode($family_info);
 	            	// ------------------------------------Family Information------------------------------------ //
@@ -1191,20 +1325,23 @@ class Admin extends CI_Controller {
 	            	$additional_personal_details[] = array('home_district'	=>  $this->input->post('home_district'),
 	    								'family_residence'				=>	$this->input->post('family_residence'),
 	    								'fathers_occupation'			=>	$this->input->post('fathers_occupation'),
-	    								'special_circumstances'			=>	$this->input->post('special_circumstances')
+	    								'special_circumstances'			=>	$this->input->post('special_circumstances'),
+										'property'						=> 	$this->input->post('property')
 				                        );
 	            	$data['additional_personal_details'] = json_encode($additional_personal_details);
 	            	// ------------------------------------ Additional Personal Details------------------------------------ //
 
 	            	// ------------------------------------ Partner Expectation------------------------------------ //
-	            	$partner_expectation[] = array('general_requirement'	=>  $this->input->post('general_requirement'),
-	    								'partner_age'						=>	$this->input->post('partner_age'),
+	            	$partner_expectation[] = array('partner_age_from'							=>  $this->input->post('partner_age_from'),
+	    								'partner_age_to'						=>	$this->input->post('partner_age_to'),
 	    								'partner_height'					=>	$this->input->post('partner_height'),
 	    								'partner_weight'					=>	$this->input->post('partner_weight'),
 	    								'partner_marital_status'			=>	$this->input->post('partner_marital_status'),
 	    								'with_children_acceptables'			=>	$this->input->post('with_children_acceptables'),
 	    								'partner_country_of_residence'		=>	$this->input->post('partner_country_of_residence'),
-	    								'partner_religion'					=>	$this->input->post('partner_religion'),
+										'partner_citizenship'				=>  $this->input->post('partner_citizenship'),
+										'about_partner'						=>  $this->input->post('about_partner'),
+                                    	'partner_religion'					=>	$this->input->post('partner_religion'),
 	    								'partner_caste'						=>	$this->input->post('partner_caste'),
 	    								'partner_complexion'				=>	$this->input->post('partner_complexion'),
 	    								'partner_education'                 =>	$this->input->post('partner_education'),
@@ -1220,7 +1357,10 @@ class Admin extends CI_Controller {
 	    								'partner_family_value'				=>	$this->input->post('partner_family_value'),
 	    								'prefered_country'					=>	$this->input->post('prefered_country'),
 	    								'prefered_state'					=>	$this->input->post('prefered_state'),
-	    								'prefered_status'					=>	$this->input->post('prefered_status')
+	    								'prefered_status'					=>	$this->input->post('prefered_status'),
+										'prefered_moon_sign'                =>  $this->input->post('prefered_moon_sign'),
+										'prefered_nakshatram'               =>  $this->input->post('prefered_nakshatram'),
+										'prefered_annual_income'			=>  $this->input->post('prefered_annual_income')		
 				                        );
 	            	$data['partner_expectation'] = json_encode($partner_expectation);
 	            	// ------------------------------------ Partner Expectation------------------------------------ //
@@ -1418,6 +1558,7 @@ class Admin extends CI_Controller {
 		$data['mobile'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->mobile;
 		$data['is_closed'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->is_closed;
 		$data['date_of_birth'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->date_of_birth;
+		$data['aadharnumber'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->aadharnumber;
 		$data['height'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->height;
 		$data['password'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->password;
 		$data['profile_image'] = $this->db->get_where("deleted_member", array("member_id" => $para1))->row()->profile_image;
@@ -1468,7 +1609,25 @@ class Admin extends CI_Controller {
         $result = $this->db->delete('deleted_member');
         recache();
 	}
-
+	
+	function member_unlock($para1)
+	{
+		$data['is_submit'] = 0;
+		$this->session->set_flashdata('alert', 'unlock');
+		$this->db->where('member_id', $para1);
+		$this->db->update('member', $data);
+		recache();
+	}
+	
+	function membership_to_premium($para1)
+	{
+		$data['membership'] = 2;
+		$this->session->set_flashdata('alert', 'premium');
+		$this->db->where('member_id', $para1);
+		$this->db->update('member', $data);
+		recache();
+	}
+	
 	function member_block($para1,$para2)
 	{
 		if ($para1 == 'no') {
@@ -1514,6 +1673,7 @@ class Admin extends CI_Controller {
 		$data['gender'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'gender');
 		$data['email'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'email');
 		$data['mobile'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'mobile');
+		$data['aadharnumber'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'aadharnumber');
 		$data['is_closed'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'is_closed');
 		$data['date_of_birth'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'date_of_birth');
 		$data['height'] = $this->Crud_model->get_type_name_by_id('member', $para1, 'height');
@@ -3920,6 +4080,15 @@ class Admin extends CI_Controller {
 
 					$this->session->set_flashdata('alert', 'edit');
 				}
+				$data3['value'] = $this->input->post('parallax_eng_text');
+				$is_edit3 = $this->input->post('is_edit');
+				if ($is_edit3 == '0') {
+					$this->db->where('type', 'home_parallax_eng_text');
+					$this->db->update('frontend_settings', $data3);
+					recache();
+
+					$this->session->set_flashdata('alert', 'edit');
+				}
 				elseif ($is_edit == '1') {
 					if ($_FILES['parallax_image']['name'] !== '') {
 		                $path = $_FILES['parallax_image']['name'];
@@ -3933,6 +4102,9 @@ class Admin extends CI_Controller {
 
 			                $this->db->where('type', 'home_parallax_text');
 							$this->db->update('frontend_settings', $data1);
+							
+							$this->db->where('type', 'home_parallax_eng_text');
+							$this->db->update('frontend_settings', $data3);
 
 			                $this->db->where('type', 'home_parallax_image');
 							$this->db->update('frontend_settings', $data2);
