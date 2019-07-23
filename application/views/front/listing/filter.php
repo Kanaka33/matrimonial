@@ -61,7 +61,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+						 <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group has-feedback">
+                                    <label for="" class="text-uppercase"><?php echo translate('member_name')?></label>
+                                    <input type="text" class="form-control form-control-sm" name="first_name" id="filter_first_name" value="<?php if(isset($first_name)){echo $first_name;}?>">
+                                    <div class="help-block with-errors">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<!--<div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group has-feedback">
+                                    <label for="" class="text-uppercase"><?php echo translate('surname')?></label>
+                                    <input type="text" class="form-control form-control-sm" name="last_name" id="filter_last_name" value="<?php if(isset($last_name)){echo $last_name;}?>">
+                                    <div class="help-block with-errors">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                      <!--  <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('member_id')?></label>
@@ -70,7 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group has-feedback">
@@ -80,13 +100,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                     <div class="row">
 
-                            <div class="col-sm-12">
+                               <div class="col-sm-12">
                                 <?php
                                 if ($this->db->get_where('frontend_settings', array('type' => 'spiritual_and_social_background'))->row()->value == "yes") {
                                 ?>
-                                <div class="form-group has-feedback">
+                             <!--   <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('religion')?></label>
                                     <?= $this->Crud_model->select_html('religion', 'religion', 'name', 'edit', 'form-control form-control-sm selectpicker s_religion', $home_religion, '', '', ''); ?>
                                     <div class="help-block with-errors">
@@ -110,28 +130,34 @@
                                     </select>
                                     <div class="help-block with-errors">
                                     </div>
-                                </div>
+                                </div>-->
                                 <?php
                                 }
                                 ?>
                                 <?php
                                 if ($this->db->get_where('frontend_settings', array('type' => 'language'))->row()->value == "yes") {
                                 ?>
-                                <div class="form-group has-feedback">
+                              <!--  <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('mother_tongue')?></label>
                                     <?= $this->Crud_model->select_html('language', 'language', 'name', 'edit', 'form-control form-control-sm selectpicker', $home_language, '', '', ''); ?>
                                     <div class="help-block with-errors">
                                     </div>
-                                </div>
+                                </div>-->
                                 <?php
                                 }
-                                ?>
+                                ?> 
                                 <?php
                                 if ($this->db->get_where('frontend_settings', array('type' => 'education_and_career'))->row()->value == "yes") {
                                 ?>
                                 <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('profession')?></label>
-                                    <input type="text" class="form-control form-control-sm" name="profession" id="filter_profession" value="<?php if(isset($profession)){echo $profession;}?>">
+                                    <input type="text" class="form-control form-control-sm" name="profession" id="filter_profession" value="<?php if(!empty($profession)){echo $profession;}?>">
+                                    <div class="help-block with-errors">
+                                    </div>
+                                </div>
+								<div class="form-group has-feedback">
+                                    <label for="" class="text-uppercase"><?php echo translate('current_workplace')?></label>
+                                    <input type="text" class="form-control form-control-sm" name="current_workplace" id="filter_current_workplace" value="<?php if(!empty($current_workplace)){echo $current_workplace;}?>">
                                     <div class="help-block with-errors">
                                     </div>
                                 </div>
@@ -142,17 +168,26 @@
                                 if ($this->db->get_where('frontend_settings', array('type' => 'present_address'))->row()->value == "yes") {
                                 ?>
                                 <div class="form-group has-feedback">
-                                    <label for="" class="text-uppercase"><?php echo translate('country')?></label>
-                                    <?= $this->Crud_model->select_html('country', 'country', 'name', 'edit', 'form-control form-control-sm selectpicker s_country', '', '', '', ''); ?>
+                                    <label for="" class="text-uppercase"><?php echo translate('country');?></label>
+                                    <?= $this->Crud_model->select_html('country', 'prefered_country', 'name', 'edit', 'form-control form-control-sm selectpicker s_country', $prefered_country, '', '', ''); ?>
+									
                                     <div class="help-block with-errors">
                                     </div>
                                 </div>
                                 <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('state')?></label>
-
+									<?php
+									if (!empty($prefered_country)) {
+										echo $this->Crud_model->select_html('state', 'prefered_state', 'name', 'edit', 'form-control form-control-sm selectpicker s_state', $prefered_state, 'country_id', $prefered_country, '');  
+									} 
+									else {
+									?>
                                     <select class="form-control form-control-sm selectpicker s_state" name="state">
                                         <option value=""><?php echo translate('choose_a_country_first')?></option>
                                     </select>
+									<?php
+										}
+									?>
                                     <div class="help-block with-errors">
                                     </div>
                                 </div>
@@ -169,6 +204,16 @@
                                 ?>
                             </div>
                         </div>
+						<div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group has-feedback">
+                                    <label for="" class="text-uppercase"><?php echo translate('property')?></label>
+                                    <input type="text" class="form-control form-control-sm" name="property" id="filter_property" value="<?php if(isset($property)){echo $property;}?>">
+                                    <div class="help-block with-errors">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
                         <?php
                         if ($this->db->get_where('frontend_settings', array('type' => 'physical_attributes'))->row()->value == "yes") {
                         ?>
@@ -176,7 +221,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('min_height_(Feet)')?></label>
-                                    <input type="text" class="form-control form-control-sm height_mask" name="min_height" id="min_height" value="<?php if($min_height != ""){echo $min_height;}else{echo '0.00';}?>">
+                                    <input type="text" class="form-control form-control-sm height_mask" name="min_height" id="min_height" value="<?php if($min_height != ""){echo $min_height;}?>">
                                     <div class="help-block with-errors">
                                     </div>
                                 </div>
@@ -184,7 +229,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group has-feedback">
                                     <label for="" class="text-uppercase"><?php echo translate('max_height_(Feet)')?></label>
-                                    <input type="text" class="form-control form-control-sm height_mask" name="max_height" id="max_height" value="<?php if($max_height != ""){echo $max_height;}else{echo '8.00';}?>">
+                                    <input type="text" class="form-control form-control-sm height_mask" name="max_height" id="max_height" value="<?php if($max_height != ""){echo $max_height;}?>">
                                 </div>
                                 <div class="help-block with-errors">
                                 </div>
@@ -193,27 +238,6 @@
                         <?php
                         }
                         ?>
-                        <div class="pt-0">
-                            <div class="card-title b-xs-bottom">
-                                <h3 class="heading heading-sm text-uppercase"><?php echo translate('member_type')?></h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="filter-radio">
-                                    <div class="radio radio-primary">
-                                        <input type="radio" name="search_member_type" id="s_all_members" value="all" <?php if(!empty($search_member_type=="all")){?>checked<?php }?>>
-                                        <label for="s_all_members"><?php echo translate('all_members')?></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input type="radio" name="search_member_type" id="s_premium_members" value="premium_members" <?php if(!empty($search_member_type=="premium_members")){?>checked<?php }?>>
-                                        <label for="s_premium_members"><?php echo translate('premium_members')?></label>
-                                    </div>
-                                    <div class="radio radio-primary">
-                                        <input type="radio" name="search_member_type" id="s_free_members" value="free_members" <?php if(!empty($search_member_type=="free_members")){?>checked<?php }?>>
-                                        <label for="s_free_members"><?php echo translate('free_members')?></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <button type="button" class="btn btn-block btn-base-1 mt-2 z-depth-2-bottom" onclick="filter_members('0','search')"><?php echo translate('search')?></button>
                     </form>
                 </div>

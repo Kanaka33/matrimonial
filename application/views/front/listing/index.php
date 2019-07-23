@@ -89,7 +89,7 @@
 
         var home_caste = "<?=$home_caste?>";
         var home_sub_caste = "<?=$home_sub_caste?>";
-        if (home_caste != null) {
+        if (home_caste != null && home_caste != "") {
             $.ajax({
                 url: "<?=base_url()?>home/get_dropdown_by_id_caste/caste/religion_id/"+home_religion+"/"+home_caste, // form action url
                 type: 'POST', // form submit method get/post
@@ -108,7 +108,7 @@
                 }
             });
         }
-        if (home_sub_caste != null) {
+        if (home_sub_caste != null && home_sub_caste != "") {
 
              $.ajax({
                 url: "<?=base_url()?>home/get_dropdown_by_id_sub_caste/sub_caste/caste_id/"+home_caste+"/"+home_sub_caste, // form action url
@@ -143,57 +143,47 @@
     });
 
     function filter_members(page, type){
-        if (type == 'search')
-        {
-            var url = '<?php echo base_url(); ?>home/ajax_member_list/'+page+'/'+type;
-        }
-        else {
-            var member_type = "";
-            if ($("#member_type").val() != "") {
-                member_type = $("#member_type").val();
-            }
-            // alert($("#member_type").val());
-            //var url = form.attr('action')+page+'/';
-            var url = '<?php echo base_url(); ?>home/ajax_member_list/'+page+'/'+member_type;
-        }
-        var form = $('#filter_form');
-        var place = $('#result');
-        var formdata = false;
-        if (window.FormData){
-            formdata = new FormData(form[0]);
-        }
-        $(".btn-back-to-top").click();
-        $.ajax({
-            url: url, // form action url
-            type: 'POST', // form submit method get/post
-            dataType: 'html', // request type html/json/xml
-            data: formdata ? formdata : form.serialize(), // serialize form data
-            cache       : false,
-            contentType : false,
-            processData : false,
-            beforeSend: function() {
-                place.html("");
-                place.html("<div class='text-center pt-5 pb-5' id='payment_loader'><i class='fa fa-refresh fa-5x fa-spin'></i><p>Please Wait...</p></div>").fadeIn();
-            },
-            success: function(data) {
-                var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-                if (width <= 768) {
-                    $(".size-sm").css("display", "none");
-                    $(".size-sm-btn").css("display", "block");
-                }
-                setTimeout(function(){
-                    place.html(data);// fade in response data
-                }, 20);
-                setTimeout(function(){
-                    place.fadeIn(); // fade in response data
-                }, 30);
-            },
-            error: function(e) {
-                console.log(e)
-            }
-        });
-    }
-
+		var formdata = false;
+       if (type == 'search'){
+           var url = '<?php echo base_url(); ?>home/ajax_member_list/'+page+'/'+type;
+		   formdata = $('#filter_form').serialize();
+       }else {
+           var member_type = "";
+           if ($("#member_type").val() != "") {
+               member_type = $("#member_type").val();
+           }
+           var url = '<?php echo base_url(); ?>home/ajax_member_list/'+page+'/'+member_type;
+       }
+       var place = $('#result');
+       $(".btn-back-to-top").click();
+       $.ajax({
+           url: url, // form action url
+           type: 'POST', // form submit method get/post
+           dataType: 'html', // request type html/json/xml
+           data: formdata ? formdata : null, // serialize form data
+           cache       : false,
+           beforeSend: function() {
+               place.html("");
+               place.html("<div class='text-center pt-5 pb-5' id='payment_loader'><i class='fa fa-refresh fa-5x fa-spin'></i><p>Please Wait...</p></div>").fadeIn();
+           },
+           success: function(data) {
+               var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+               if (width <= 768) {
+                   $(".size-sm").css("display", "none");
+                   $(".size-sm-btn").css("display", "block");
+               }
+               setTimeout(function(){
+                   place.html(data);// fade in response data
+               }, 20);
+               setTimeout(function(){
+                   place.fadeIn(); // fade in response data
+               }, 30);
+           },
+           error: function(e) {
+               console.log(e)
+           }
+       });
+   }
     function adv_search(){
         $(".size-sm").css("display", "block");
         $(".size-sm-btn").css("display", "none");

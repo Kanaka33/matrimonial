@@ -60,7 +60,7 @@ foreach ($get_all_members as $member): ?>
 
             $present_address = $this->Crud_model->get_type_name_by_id('member', $member->member_id, 'present_address');
             $present_address_data = json_decode($present_address, true);
-            $calculated_age = (date('Y') - date('Y', $member->date_of_birth));
+            $calculated_age = (date('Y') - date('Y', strtotime($member->date_of_birth)));
         ?>
         <div class="block-title-wrapper">
             <?php if ($member->membership == 2): ?>
@@ -75,10 +75,10 @@ foreach ($get_all_members as $member): ?>
             </h3>
             <h4 class="heading heading-xs c-gray-light text-uppercase strong-400"><?=$education_and_career_data[0]['occupation']?></h4>
             <table class="table-striped table-bordered mb-2" style="font-size: 12px;">
-                <tr>
+               <!-- <tr>
                     <td height="30" style="padding-left: 5px;" class="font-dark"><b><?php echo translate('Member ID')?></b></td>
                     <td height="30" style="padding-left: 5px;" class="font-dark" colspan="3"><a onclick="return goto_profile(<?=$member->member_id?>)" class="c-base-1"><b><?=$member->member_profile_id?></b></a></td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><b><?php echo translate('age')?></b></td>
                     <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><?=$calculated_age?></td>
@@ -87,21 +87,11 @@ foreach ($get_all_members as $member): ?>
                 </tr>
                 <tr>
                     <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><b><?php echo translate('religion')?></b></td>
-                    <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><?=$this->Crud_model->get_type_name_by_id('religion', $spiritual_and_social_background_data[0]['religion']);?></td>
+                    <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><?php echo translate('hinduism')?></td>
                     <td width="120" height="30" style="padding-left: 5px;"><b><?php echo translate('caste_/_sect')?></b></td>
-					<?php 
-						if (isset($spiritual_and_social_background_data[0]['caste']) && 
-						$spiritual_and_social_background_data[0]['caste'] != '') {
-							
-					?>
-                    <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><?=$this->db->get_where('caste', array('caste_id'=>$spiritual_and_social_background_data[0]['caste']))->row()->caste_name?></td>
-					<?php
-					}else{
-					?>
-					<td width="120" height="30" style="padding-left: 5px;"  class="font-dark"></td>
-					<?php
-					}
-					?>
+					
+                    <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><?php echo translate('kamma')?></td>
+					
                 </tr>
                 <tr>
                     <td width="120" height="30" style="padding-left: 5px;" class="font-dark"><b><?php echo translate('mother_tongue')?></b></td>
@@ -194,7 +184,7 @@ foreach ($get_all_members as $member): ?>
                                     </span>
                                 </a>
                             </li>
-                            <li class="listing-hover">
+                           <!-- <li class="listing-hover">
                                 <?php
                                     $followed = $this->Crud_model->get_type_name_by_id('member', $this->session->userdata('member_id'), 'followed');
                                     $follow = json_decode($followed, true);
@@ -227,13 +217,13 @@ foreach ($get_all_members as $member): ?>
                                         <i class="fa fa-star"></i> <?=$followed_text?>
                                     </span>
                                 </a>
-                            </li>
+                            </li>-->
                             <li class="listing-hover">
                                 <a onclick="return confirm_ignore(<?=$member->member_id?>)">
                                     <i class="fa fa-ban"></i><?php echo translate('ignore')?>
                                 </a>
                             </li>
-                            <li class="listing-hover">
+                           <!-- <li class="listing-hover">
                                 <a>
                                     <?php
                                         $report = $this->Crud_model->get_type_name_by_id('member', $this->session->userdata('member_id'), 'report_profile');
@@ -273,7 +263,7 @@ foreach ($get_all_members as $member): ?>
                                     </a>
 
                                 </a>
-                            </li>
+                            </li>-->
                         <?php } ?>
                     </ul>
 
@@ -281,18 +271,17 @@ foreach ($get_all_members as $member): ?>
             </div>
         </div>
     </div>
-<?php endforeach ?>
+<?php endforeach?>
 <div id="pseudo_pagination" style="display: none;">
     <?= $this->ajax_pagination->create_links();?>
 </div>
-
 <script type="text/javascript">
     $('#pagination').html($('#pseudo_pagination').html());
 </script>
 
 <script>
     var isloggedin = "<?=$this->session->userdata('member_id')?>";
-
+	
     function goto_profile(id) {
         // alert(id);
         if (isloggedin == "") {
