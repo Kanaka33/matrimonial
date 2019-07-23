@@ -99,12 +99,12 @@
 	                                    $header_logo = json_decode($header_logo_info, true);
 	                                    if (file_exists('uploads/header_logo/'.$header_logo[0]['image'])) {
 	                                    ?>
-	                                        <img src="<?=base_url()?>uploads/header_logo/<?=$header_logo[0]['image']?>" class="img-responsive" height="100%">
+	                                        <img src="<?=base_url()?>uploads/header_logo/<?=$header_logo[0]['image']?>" class="img-responsive" height="100%" width="80%">
 	                                    <?php
 	                                    }
 	                                    else {
 	                                    ?>
-	                                        <img src="<?=base_url()?>uploads/header_logo/default_image.png" class="img-responsive" height="100%">
+	                                        <img src="<?=base_url()?>uploads/header_logo/default_image.png" class="img-responsive" height="100%" width="80%">
 	                                    <?php
 	                                    }
 	                                ?>
@@ -124,9 +124,9 @@
 						                <a class="nav-link <?php if($page == 'home'){?>nav_active<?php }?>" href="<?=base_url()?>home" aria-haspopup="true" aria-expanded="false">
 						                <?php echo translate('home')?></a>
 						                </li>
-						                <li class="custom-nav dropdown">
+						               <!-- <li class="custom-nav dropdown">
 						                <a class="nav-link <?php if($page == 'listing' || $page == 'member_profile'){?>nav_active<?php }?>" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						                <?php echo translate('active_members')?></a>
+						                <?php echo translate('members')?></a>
 						                <ul class="dropdown-menu" style="border: 1px solid #f1f1f1 !important;">
 						                    <li class="dropdown dropdown-submenu">
 						                    <li>
@@ -143,14 +143,30 @@
 						                    </li>
 						                </ul>
 						                </li>
+						               <li class="custom-nav">
+						                <a class="nav-link <?php if($page == 'plans' || $page == 'subscribe'){?>nav_active<?php }?>" href="<?=base_url()?>home/plans" aria-haspopup="true" aria-expanded="false">
+						                <?php echo translate('premium_plans')?></a>
+						                </li> -->
+										 <li class="custom-nav">
+										<a class="nav-link <?php if($page == 'listing' || $page == 'member_profile'){?>nav_active<?php }?>" onclick="return goto_members()" aria-expanded="false">
+						                <?php echo translate('members')?></a>
+						                </li>
 						                <!-- <li class="custom-nav">
 						                <a class="nav-link <?php if($page == 'plans' || $page == 'subscribe'){?>nav_active<?php }?>" href="<?=base_url()?>home/plans" aria-haspopup="true" aria-expanded="false">
 						                <?php echo translate('premium_plans')?></a>
 						                </li> -->
-						                <li class="custom-nav">
+						                <!--<li class="custom-nav">
 						                <a class="nav-link <?php if($page == 'stories' || $page == 'story_detail'){?>nav_active<?php }?>" href="<?=base_url()?>home/stories" aria-haspopup="true" aria-expanded="false">
 						                <?php echo translate('happy_stories')?></a>
+						                </li>-->
+										<?php
+											if(empty($this->session->userdata['member_id'])){
+										?>
+						                <li class="custom-nav">
+						                <a class="nav-link <?php if($page == 'registration' || $page == 'story_detail'){?>nav_active<?php }?>" href="<?=base_url()?>home/registration" aria-haspopup="true" aria-expanded="false">
+						                <?php echo translate('registration')?></a>
 						                </li>
+											<?php } ?>
 						                <li class="custom-nav">
 						                <a class="nav-link <?php if($page == 'contact_us'){?>nav_active<?php }?>" href="<?=base_url()?>home/contact_us" aria-haspopup="true" aria-expanded="false">
 						                <?php echo translate('contact_us')?></a>
@@ -189,4 +205,16 @@
 						                }});
 						        });
 						    });
+							function goto_members() {
+								var isloggedin = "<?=$this->session->userdata('member_id')?>";
+								if (isloggedin == "") {
+									$("#active_modal").modal("toggle");
+									$("#modal_header").html("<?=translate('please_login_or_register')?>");
+									$("#modal_body").html("<p class='text-center'><?=translate('please_login_or_register_message')?></p>");
+									$("#modal_buttons").html("<a href='<?=base_url()?>home/registration' class='btn btn-sm btn-base-1 btn-shadow' style='width:25%'><?=translate('register_now')?></a>&nbsp;<a href='<?=base_url()?>home/login' class='btn btn-sm btn-base-1 btn-shadow' style='width:25%'><?=translate('login')?></a>");
+								}
+								else {
+									window.location.href = "<?=base_url()?>home/listing/members";
+								}
+							}
 						</script>

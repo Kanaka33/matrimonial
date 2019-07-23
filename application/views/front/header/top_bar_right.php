@@ -67,15 +67,16 @@
 												}
 												else{
 												?>	
-		                                            <a href="<?=base_url()?>home/login" class="btn btn-styled btn-xs btn-base-1 btn-shadow"><i class="fa fa-power-off"></i> <?php echo translate('log_in')?></a>
-		                                            <a href="<?=base_url()?>home/registration" class="btn btn-styled btn-xs btn-base-1 btn-shadow"><i class="fa fa-user"></i> <?php echo translate('register')?></a>
+		                                            <a href="<?=base_url()?>home/login" class="btn btn-styled btn-xs btn-base-1 text-white"><i class="fa fa-power-off"></i> <?php echo translate('log_in')?></a>
+		                                            <a style="display:none;" href="<?=base_url()?>home/registration" class="btn btn-styled btn-xs btn-base-1"><i class="fa fa-user"></i> <?php echo translate('register')?></a>
 												<?php
 												}
-												?>
+												?> 
 		                                        </li>
 
 						                    <script>
 											    $(document).ready(function(){
+													var isloggedin = "<?=$this->session->userdata('member_id')?>";
 											        if (isloggedin != "") {
 											            var noti_count = "<?php if (!empty($noti_counter)){echo $noti_counter;}?>";
 											            if (noti_count > 0) {
