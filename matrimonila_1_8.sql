@@ -49058,29 +49058,31 @@ INSERT INTO `frontend_settings` (`frontend_settings_id`, `type`, `value`) VALUES
 (21, 'advance_search_position', 'left'),
 (22, 'home_members_status', 'yes'),
 (23, 'home_parallax_status', 'yes'),
-(24, 'home_stories_status', 'yes'),
-(25, 'home_plans_status', 'yes'),
+(24, 'home_stories_status', 'no'),
+(25, 'home_plans_status', 'no'),
 (26, 'home_contact_status', 'yes'),
 (27, 'present_address', 'no'),
 (28, 'education_and_career', 'yes'),
 (29, 'physical_attributes', 'yes'),
 (30, 'language', 'yes'),
-(31, 'hobbies_and_interests', 'yes'),
+(31, 'hobbies_and_interest', 'yes'),
 (32, 'personal_attitude_and_behavior', 'yes'),
 (33, 'residency_information', 'yes'),
 (34, 'spiritual_and_social_background', 'yes'),
 (35, 'life_style', 'yes'),
 (36, 'astronomic_information', 'yes'),
 (37, 'permanent_address', 'yes'),
-(38, 'family_information', 'yes'),
+(38, 'family_info', 'yes'),
 (39, 'additional_personal_details', 'yes'),
 (40, 'partner_expectation', 'yes'),
 (41, 'home_search_style', '1'),
 (42, 'home_searching_heading', 'Search Your Soul Mates'),
 (43, 'sticky_header', 'no'),
 (44, 'registration_message', '<b><h2>Thanks For Registration !&nbsp;</h2></b><div>You Have To Wait For Admin Approval. Approval Confirmation Will Be Sent To Your Email. \r\n</div>'),
-(45, 'registration_message_image', '[{\"image\":\"registration_message_image1548057147.jpg\"}]');
-
+(45, 'registration_message_image', '[{\"image\":\"registration_message_image1548057147.jpg\"}]'),
+(46,'home_parallax_eng_text','yes')
+(47,'mother_family_details','yes'),
+(48,'father_family_details','yes'); 
 -- --------------------------------------------------------
 
 --
@@ -49775,7 +49777,7 @@ CREATE TABLE `site_language` (
 
 INSERT INTO `site_language` (`word_id`, `word`, `english`, `Bangla`, `Spanish`, `Arabic`, `French`, `Chinese`, `lang_7`) VALUES
 (1, 'home', 'Home', 'বাড়ি', 'Casa', NULL, NULL, NULL, 'होम'),
-(2, 'active_members', 'Active Members', 'সক্রিয় সদস্যগণ', 'Miembros activos', NULL, NULL, NULL, 'सक्रिय सदस्य'),
+(2, 'active_members', 'Members', 'সদস্যগণ', 'Miembros', NULL, NULL, NULL, 'सदस्य'),
 (3, 'all_members', 'All Members', 'সকল সদস্য', 'Todos los miembros', NULL, NULL, NULL, 'सभी सदस्य'),
 (4, 'premium_members', 'Premium Members', 'প্রিমিয়াম সদস্য', 'Miembros premium', NULL, NULL, NULL, 'प्रीमियम सदस्य'),
 (5, 'free_members', 'Free Members', 'ফ্রি সদস্য', 'Miembros gratis', NULL, NULL, NULL, 'नि: शुल्क सदस्य'),
@@ -50592,8 +50594,9 @@ INSERT INTO `site_language` (`word_id`, `word`, `english`, `Bangla`, `Spanish`, 
 (814, 'registration_message', 'Registration Message', NULL, NULL, NULL, NULL, NULL, NULL),
 (815, 'member_approval_by_admin', 'Member Approval By Admin', NULL, NULL, NULL, NULL, NULL, NULL),
 (816, 'account_opening_from_user_email_when_member_member_approval_active', 'Account Opening From User Email When Member Member Approval Active', NULL, NULL, NULL, NULL, NULL, NULL),
-(817, 'account_opening_from_user_email._when_member_member_approval_active', 'Account Opening From User Email. When Member Member Approval Active', NULL, NULL, NULL, NULL, NULL, NULL);
-
+(817, 'account_opening_from_user_email._when_member_member_approval_active', 'Account Opening From User Email. When Member Member Approval Active', NULL, NULL, NULL, NULL, NULL, NULL),
+(818, 'if_you_are_member', 'If you are member', NULL, NULL, NULL, NULL, NULL, NULL),
+(819, 'if_you_are_not_a_member_yet', 'if you are not a member yet', NULL, NULL, NULL, NULL, NULL, NULL);
 -- --------------------------------------------------------
 
 --
@@ -55572,6 +55575,22 @@ INSERT INTO `third_party_settings` (`third_party_settings_id`, `type`, `value`) 
 --
 -- Indexes for dumped tables
 --
+ CREATE TABLE `relationship_type` (
+  `relationship_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`relationship_type_id`)
+);  
+
+insert into `relationship_type` (`relationship_type_id`, `name`) values('1','Elder Brother');
+insert into `relationship_type` (`relationship_type_id`, `name`) values('2','Younger Brother');
+insert into `relationship_type` (`relationship_type_id`, `name`) values('3','Twin Brother');
+insert into `relationship_type` (`relationship_type_id`, `name`) values('4','Elder Sister');
+insert into `relationship_type` (`relationship_type_id`, `name`) values('5','Younger Sister');
+insert into `relationship_type` (`relationship_type_id`, `name`) values('6','Twin Sister');
+
+
+ALTER TABLE  member ADD COLUMN mother_family_details VARCHAR(512);
+ALTER TABLE  member ADD COLUMN father_family_details VARCHAR(512);
 
 --
 -- Indexes for table `admin`
