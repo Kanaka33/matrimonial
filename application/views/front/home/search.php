@@ -55,18 +55,18 @@
                 if ($this->db->get_where('frontend_settings', array('type' => 'spiritual_and_social_background'))->row()->value == "yes") {
                 ?>
                 <div class="row">
-                    <div class="col-sm-12">
+                   <!-- <div class="col-sm-12">
                         <div class="form-group has-feedback">
                             <label for="" class="text-uppercase"><?php echo translate('religion')?></label>
                             <?= $this->Crud_model->select_html('religion', 'religion', 'name', 'edit', 'form-control form-control-sm selectpicker s_religion', '', '', '', ''); ?>
                             <div class="help-block with-errors">
                             </div>
                         </div>
-                    </div>
+                    </div -->
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-12">
+                   <!-- <div class="col-sm-12">
                         <div class="form-group has-feedback">
                             <label for="" class="text-uppercase"><?php echo translate('caste_/_sect')?></label>
                             <select class="form-control form-control-sm selectpicker s_caste" name="caste">
@@ -75,10 +75,10 @@
                             <div class="help-block with-errors">
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                  <!--  <div class="col-sm-12">
                         <div class="form-group has-feedback">
                             <label for="" class="text-uppercase"><?php echo translate('sub_caste')?></label>
                             <select class="form-control form-control-sm selectpicker s_sub_caste" name="sub_caste">
@@ -87,7 +87,7 @@
                             <div class="help-block with-errors">
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <?php
                 }
@@ -96,14 +96,14 @@
                 if ($this->db->get_where('frontend_settings', array('type' => 'language'))->row()->value == "yes") {
                 ?>
                 <div class="row">
-                    <div class="col-sm-12">
+                  <!--  <div class="col-sm-12">
                         <div class="form-group has-feedback">
                             <label for="" class="text-uppercase"><?php echo translate('mother_tongue')?></label>
                             <?= $this->Crud_model->select_html('language', 'language', 'name', 'edit', 'form-control form-control-sm selectpicker', '', '', '', ''); ?>
                             <div class="help-block with-errors">
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <?php
                 }

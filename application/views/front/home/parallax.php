@@ -1,7 +1,7 @@
 <?php
     $home_parallax_image = $this->db->get_where('frontend_settings', array('type' => 'home_parallax_image'))->row()->value;
     $home_parallax_text = $this->db->get_where('frontend_settings', array('type' => 'home_parallax_text'))->row()->value;
-
+	$home_parallax_eng_text = $this->db->get_where('frontend_settings', array('type' => 'home_parallax_eng_text'))->row()->value;
     $parallax_image = json_decode($home_parallax_image, true);
 ?>
 <section class="slice--offset parallax-section parallax-section-lg" style="background-image: url(<?=base_url()?>uploads/home_page/parallax_image/<?=$parallax_image[0]['image']?>);">
@@ -11,18 +11,23 @@
             <div class="col-lg-8 col-md-8 text-center">
                 <h1 class="heading heading-inverse heading-1 strong-400 text-normal">
                 <?=$this->system_name?> </h1>
+				
                 <span class="clearfix"></span>
-                <div class="fluid-paragraph fluid-paragraph-sm mt-3 mb-3 c-white">
+                <div class="fluid-paragraph fluid-paragraph-lg mt-3 mb-3 c-white">
                     <?=$home_parallax_text?>
                 </div>
-                <div class="btn-container mt-5">
+				 <div class="fluid-paragraph fluid-paragraph-lg mt-3 mb-3 c-white">
+                    <?=$home_parallax_eng_text?>
+                </div>
+                <div class="btn-container mt-5 row py-3 justify-content-center">
                     <?php if ($this->session->userdata('member_id')) { ?>
                         <a href="<?=base_url()?>home/profile" class="btn btn-styled btn-base-1 z-depth-2-bottom"><?php echo translate('go_to_profile')?></a>
                     <?php } else {?>
-                        <a href="<?=base_url()?>home/registration" class="btn btn-styled btn-md btn-base-1 z-depth-2-bottom"><?php echo translate('register_now')?></a>
+                        <a href="<?=base_url()?>home/registration" class="btn btn-styled btn-md btn-base-1 z-depth-2-bottom text-white"><?php echo translate('register_now')?></a>
                     <?php } ?>
                 </div>
-            </div>
-        </div>
+           </div>
+				</div> 
+        
     </div>
 </section>

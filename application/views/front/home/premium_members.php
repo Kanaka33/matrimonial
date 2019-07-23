@@ -2,7 +2,8 @@
     <div class="container">
         <div class="section-title section-title--style-1 text-center">
             <h3 class="section-title-inner">
-            <span><?php echo translate('premium_members')?></span>
+            <!--changed from premium_members to active_members in below tag for getting members in homepage-->
+           <span><?php echo translate('active_members')?></span>
             </h3>
             <span class="section-title-delimiter clearfix d-none"></span>
         </div>

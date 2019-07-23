@@ -10,15 +10,22 @@
             $slider_position = $this->db->get_where('frontend_settings', array('type' => 'slider_position'))->row()->value;
             if($slider_status=='yes'){
                 $home_search_style = $this->db->get_where('frontend_settings', array('type' => 'home_search_style'))->row()->value;
+				if (!empty($this->session->userdata['member_id'])) { 
                 if ($home_search_style == '2') {
                     if($slider_position=='left'){
                         include_once 'slider_2.php';
-                        include_once 'search.php';
+						  
+							include_once 'search.php';
+						 
                     } elseif($slider_position=='right'){
-                        include_once 'search.php';
+                        // if (!empty($this->session->userdata['member_id'])) {
+							include_once 'search.php';
+						 //} 
                         include_once 'slider_2.php';
                     }
-                } elseif ($home_search_style == '1') {
+                } 
+			}else  {
+					//if ($home_search_style == '1') {
                     include_once 'slider.php';
                 }
             }
@@ -28,16 +35,16 @@
 </section>
 <?php
     if($home_members_status=='yes'){
-        include_once'premium_members.php';
+       // include_once'premium_members.php';
     }
     if($home_parallax_status=='yes'){
         include_once'parallax.php';
     }
     if($home_stories_status=='yes'){
-        include_once'happy_stories.php';
+        //include_once'happy_stories.php';
     }
     if($home_plans_status=='yes'){
-        include_once'packages.php';
+        //include_once'packages.php';
     }
     if($home_contact_status=='yes'){
         include_once'contact.php';

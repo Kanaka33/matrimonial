@@ -18,26 +18,31 @@
                                             <h3 class="heading heading-5 strong-400">
                                             <?php echo translate('contact_information ')?></h3>
                                             <p class="mt-3 mb-3">
-                                                <?=$home_contact_info_text?>
+                                                
                                             </p>
-                                            <div class="icon-block--style-3 mb-1 mt-5">
+                                            <div class="icon-block--style-3 mb-1 mt-2">
                                                 <i class="icon ion-ios-telephone bg-base-4"></i>
                                                 <span class="heading heading-6 strong-400">
                                                 <?=$home_contact_phone?> </span>
+                                                
+                                              <i class="icon ion-ios-email bg-base-4"></i>
+                                               <a href="mailto:<?=$this->system_email?>"> <span class="heading heading-6 strong-400">
+                                                <?=$this->system_email?> </span></a>
+                                                
+                                                    <i class="icon ion-ios-location bg-base-4"></i>
+                                                <a target="_blank" href="http://maps.google.com/?q=<?=$home_contact_address?>"><span class="heading heading-6 strong-400">
+                                                <?=$home_contact_address?> </span></a>
+                                                
                                             </div>
                                             <div class="icon-block--style-3 mb-3">
-                                                <i class="icon ion-ios-email bg-base-4"></i>
-                                                <span class="heading heading-6 strong-400">
-                                                <?=$this->system_email?> </span>
+                                                 
                                             </div>
                                             <div class="icon-block--style-3">
-                                                <i class="icon ion-ios-location bg-base-4"></i>
-                                                <span class="heading heading-6 strong-400">
-                                                <?=$home_contact_address?> </span>
+                                               
                                             </div>
                                             <span class="clearfix"></span>
-                                            <a href="<?=base_url()?>home/contact_us" class="btn btn-styled btn-block btn-base-1 btn-outline btn-circle mt-5 z-depth-2-bottom" style="width: 40%;color: #FFF!important">
-                                            <?php echo translate('contact_us')?></a>
+                                            <!--<a href="<?//=base_url()?>home/contact_us" class="btn btn-styled btn-block btn-base-1 btn-outline btn-circle mt-5 z-depth-2-bottom" style="width: 40%;color: #FFF!important">
+                                            <?php //echo translate('contact_us')?></a>
                                             <span class="clearfix"></span>
                                             <div class="text-center">
                                                 <ul class="social-media social-media--style-1-v4 mt-4">
@@ -53,7 +58,7 @@
                                                             <?php endif ?>
                                                     <?php endforeach ?>
                                                 </ul>
-                                            </div>
+                                            </div>-->
                                         </div>
                                     </center>
                                 </div>
