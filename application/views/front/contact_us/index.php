@@ -21,9 +21,9 @@
         <?php
             $contact_us_text = $this->db->get_where('frontend_settings', array('type' => 'contact_us_text'))->row()->value;
         ?>
-        <div class="fluid-paragraph fluid-paragraph-sm c-gray-light strong-300 text-center">
+      <!--  <div class="fluid-paragraph fluid-paragraph-sm c-gray-light strong-300 text-center">
             <?php echo $contact_us_text?>
-        </div>
+        </div>-->
 
         <span class="space-xs-xl"></span>
 
